@@ -105,7 +105,7 @@ mp
 
 ![](README_files/figure-html/map-1.png)<!-- -->
 
-## Load and Visialize Monthly Precipitation Data
+## Load and Visialize Monthly Precipitation Data (PI)
 
 
 
@@ -149,7 +149,7 @@ mp + geom_raster(aes(fill=pi))+
 ![](README_files/figure-html/pi-1.png)<!-- -->
 
 
-## Calibration 
+## Calibration Historical Precipitation Index (HPI) vs Standard Precipitation Index (SPI)
 
 
 ```r
@@ -344,7 +344,7 @@ p
 ![](README_files/figure-html/spiCalib3-1.png)<!-- -->
 
 
-## calculate SPI from HPI for 1500-xxxx
+## Calculate SPI from HPI for 1500-xxxx
 
 
 ```r
@@ -399,7 +399,7 @@ mp1
 
 ![](README_files/figure-html/spiPlot-1.png)<!-- -->
 
-## HDI
+## Calculate Historical Drought Index(HDI) and Modern Drought Index (MDI)
 
 
 ```r
@@ -509,7 +509,7 @@ write.table(hhi, file = "csv/hhi_1500_2xxx.csv", append = FALSE, quote = TRUE, s
             col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")
 ```
 
-## Plot HDI Calibration
+## Plot HDI/MDI Calibration
 
 
 ```r
@@ -547,7 +547,97 @@ mp1
 
 ![](README_files/figure-html/hdiPlotCal-1.png)<!-- -->
 
-## Plot Historical Humidity Index
+## Calculate Lowpass FFT of HDI & MDI
+
+
+```r
+hiCal2 <- subset(hiFull, hiFull$year>1880 & hiFull$year<1996)
+hiCal2 <- hiCal[order(hiCal$ts),]
+spiCal2 <- spiCal
+
+#FFT for HDI
+pic <- hiCal2$hdi
+len <- length(pic)
+## mirror pic
+pic <- append(pic, pic)
+for(i in 1:len) {
+  pic[i+len] <- pic[1+len-i]
+}
+
+frq <- fft(pic, inverse = FALSE)
+frq1 <- frq
+
+filterYears = 1.0   #filter 1y
+start = round(len/(12*filterYears))
+stop  = round(2*len-start)
+frq1[start:stop] <- 0.0 
+
+
+pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
+pic1 <- pic1[1:len]
+hiCal2$hdi <- pic1
+
+
+## FFt for MDI
+pic <- spiCal2$mdi
+len <- length(pic)
+## mirror pic
+pic <- append(pic, pic)
+for(i in 1:len) {
+  pic[i+len] <- pic[1+len-i]
+}
+
+frq <- fft(pic, inverse = FALSE)
+frq1 <- frq
+
+##filterYears = 1.0   #filter 1y
+start = round(len/(12*filterYears))
+stop  = round(2*len-start)
+frq1[start:stop] <- 0.0 
+
+
+pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
+pic1 <- pic1[1:len]
+spiCal2$mdi <- pic1
+```
+
+## Plot HDI & MDI (1y)
+
+
+```r
+df <- data.frame(y = hiCal2$hdi, x = spiCal2$mdi)
+
+df <- subset(df, !is.na(df$x))
+mx <- lm(y ~ x, df);  
+eq <- substitute(italic(r)^2~"="~r2, 
+                 list(r2 = format(summary(mx)$r.squared, digits = 3)))
+eq <- as.character(as.expression(eq))
+
+
+mp1 <- ggplot() +
+  #theme_classic(base_size=80) +
+  theme_classic() +
+  #coord_cartesian(ylim=c(-4,4)) +
+  scale_y_continuous(breaks=c(-3,-2,-1,0,1,2,3), limits=c(-4,4)) +
+  labs(x="Year", y="DI (1y)", title="", subtitle="") +
+  geom_hline(aes(yintercept=0)) +
+  geom_line(aes(y=-spiCal2$mdi, x=spiCal2$ts, color="MDI"), size=0.25) +
+  geom_line(aes(y=hiCal2$hdi, x=hiCal2$ts, color="HDI"), size=0.25) +
+  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=4) +
+  scale_color_manual(
+    name = "", 
+    labels = c("MDI+", "HDI-"),
+    breaks  = c("MDI", "HDI"),
+    values = c("MDI"="#33ccff", "HDI"="#ff9933", "black"="#000000")
+  ) + 
+  theme( legend.key.width = unit(2,"cm")) 
+mp1
+```
+
+![](README_files/figure-html/hdiPlotFft-1.png)<!-- -->
+
+
+## Plot Historical Humidity Index (HHI)
 
 
 ```r
@@ -594,11 +684,14 @@ mp2 <- ggplot() +
                )
   ) + 
   theme( legend.key.width = unit(1,"cm")) 
+
 mp2
 ```
 
 ![](README_files/figure-html/hhiPlot-1.png)<!-- -->
-## Calculate Lowpass FFT
+
+## Calculate Lowpass FFT of HHI
+
 
 ```r
 pt1 <- hhi
@@ -636,8 +729,6 @@ pt1$prec5 <- pic5
 ```
 
 
-
-
 ## Plot Historical Humidity Index
 
 
@@ -665,9 +756,5 @@ mp + geom_raster(aes(year,month, fill=hhi))+
 ```
 
 ![](README_files/figure-html/hdiPlot-1.png)<!-- -->
-
-```r
-  #geom_line(aes(y=10+0.5*pt1$hhim, x=pt1$time)) 
-```
 
 

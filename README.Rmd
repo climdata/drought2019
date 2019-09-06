@@ -8,49 +8,18 @@ output:
   pdf_document: default
 ---
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 ## Visualize tambora.org data related to droughts
 
 
-
-```r
+```{r map}
 require("ggplot2")
-```
-
-```
-## Loading required package: ggplot2
-```
-
-```
-## Warning: package 'ggplot2' was built under R version 3.5.3
-```
-
-```r
 require("extrafont")
-```
-
-```
-## Loading required package: extrafont
-```
-
-```
-## Warning: package 'extrafont' was built under R version 3.5.2
-```
-
-```
-## Registering fonts with R
-```
-
-```r
 require("ggmap")
-```
 
-```
-## Loading required package: ggmap
-```
-
-```r
 #require("rnaturalearth")
 #require("rnaturalearthdata")
 #require("sf")
@@ -84,32 +53,17 @@ mp <- mp +
     ) +
    ## c(20,100) for base_size=80; 2500*2500
    scale_size_continuous( range = c(4, 20), breaks=c(100,500,1000,5000,10000), name="Count")
-```
 
-```
-## Scale for 'size' is already present. Adding another scale for 'size',
-## which will replace the existing scale.
-```
-
-```r
 mp  
-```
+
 
 ```
-## Warning: Removed 128 rows containing missing values (geom_point).
-```
-
-```
-## Warning: Removed 11 rows containing missing values (geom_point).
-```
-
-![](README_files/figure-html/map-1.png)<!-- -->
 
 ## Load and Visialize Monthly Precipitation Data
 
 
+```{r pi}
 
-```r
 p0 <- read.csv("https://raw.githubusercontent.com/climdata/glaser2019/master/csv/pi_1500_2xxx_monthly.csv", sep=",", na = "NA")
 spifull <- read.csv("https://raw.githubusercontent.com/climdata/dwdSPI/master/csv/spi_de.csv", sep=",", na = "NA")
 
@@ -144,41 +98,19 @@ mp + geom_raster(aes(fill=pi))+
                        limits=c(-3,3)) +
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="PI", reverse = TRUE))  
-```
 
-![](README_files/figure-html/pi-1.png)<!-- -->
+```
 
 
 ## Calibration 
 
-
-```r
+```{r spiCalib1}
 library(zoo)
-```
-
-```
-## 
-## Attaching package: 'zoo'
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric
-```
-
-```r
 library("ggplot2")
 library(gridExtra)
 library(grid)
 library(qdapTools)
-```
 
-```
-## Warning: package 'qdapTools' was built under R version 3.5.3
-```
-
-```r
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
@@ -244,41 +176,15 @@ for (m in c(1:12)) {
 
 margin = theme(plot.margin = unit(c(1,1,1,1), "mm"))
 p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=3)
-```
 
-```
-## Warning: Removed 3 rows containing non-finite values (stat_smooth).
-```
 
-```
-## Warning: Removed 3 rows containing missing values (geom_point).
-```
-
-```
-## Warning: Removed 4 rows containing non-finite values (stat_smooth).
-```
-
-```
-## Warning: Removed 4 rows containing missing values (geom_point).
-```
-
-```
-## Warning: Removed 2 rows containing non-finite values (stat_smooth).
-```
-
-```
-## Warning: Removed 2 rows containing missing values (geom_point).
-```
-
-![](README_files/figure-html/spiCalib1-1.png)<!-- -->
-
-```r
 ##plots[11]
+
 ```
 ## Duration and scale factors of the relationship between SPI and HPI
 
+```{r spiCalib2}
 
-```r
 df <- list2df(slopes, col1="y")
 df$x <- c(1:12)
 mx <- lm(log(df$y) ~ log(df$x), df)
@@ -305,15 +211,15 @@ p <- ggplot(data = df, aes(x = x, y = y)) +
   geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=5)
 
 p
-```
 
-![](README_files/figure-html/spiCalib2-1.png)<!-- -->
+
+```
 
 
 ## Duration and scale factors of the relationship between SPI and HPI
 
+```{r spiCalib3}
 
-```r
 df <- list2df(offsets, col1="y")
 df$x <- c(1:12)
 mx <- lm(df$y ~ df$x, df)
@@ -339,15 +245,18 @@ p <- ggplot(data = df, aes(x = x, y = y)) +
   geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 0.05, label = eq, parse = TRUE, size=5)
 
 p
-```
 
-![](README_files/figure-html/spiCalib3-1.png)<!-- -->
+
+```
 
 
 ## calculate SPI from HPI for 1500-xxxx
 
+```{r spiCalc}
 
-```r
+
+
+
 hspi <- hi[,c('year','month','time', 'ts')]
 for (m in c(1:12)) {
   hdiCol <- paste("hdi", m, sep="")
@@ -369,13 +278,13 @@ hspi <- rbind(hspi, spinew)
 write.table(hspi, file = "csv/spi_1500_2xxx.csv", append = FALSE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")
+
 ```
 
 
 ## Plot SPI for 1500-2xxx
 
-
-```r
+```{r spiPlot}
 mp1 <- ggplot(hspi, aes()) +
   #theme_classic(base_size=80) +
   theme_classic() +
@@ -395,14 +304,13 @@ mp1 <- ggplot(hspi, aes()) +
   theme( legend.key.width = unit(2,"cm")) 
 
 mp1
-```
 
-![](README_files/figure-html/spiPlot-1.png)<!-- -->
+```
 
 ## HDI
 
+```{r hdiCalc}
 
-```r
 hiFull <- hspi
 
 ## Modern Drought Index MDI
@@ -507,12 +415,13 @@ hhi$hdwi <- round(hhi$hdwi, digits=6)
 write.table(hhi, file = "csv/hhi_1500_2xxx.csv", append = FALSE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")
+
 ```
 
 ## Plot HDI Calibration
 
+```{r hdiPlotCal}
 
-```r
 hiCal <- subset(hiFull, hiFull$year>1880 & hiFull$year<1996)
 hiCal <- hiCal[order(hiCal$ts),]
 
@@ -543,22 +452,14 @@ mp1 <- ggplot() +
   ) + 
   theme( legend.key.width = unit(2,"cm")) 
 mp1
-```
 
-![](README_files/figure-html/hdiPlotCal-1.png)<!-- -->
+```
 
 ## Plot Historical Humidity Index
 
-
-```r
+```{r hhiPlot}
 library("RColorBrewer")
-```
 
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 mp2 <- ggplot() +
   #theme_classic(base_size=80) +
   theme_classic() +  
@@ -595,12 +496,12 @@ mp2 <- ggplot() +
   ) + 
   theme( legend.key.width = unit(1,"cm")) 
 mp2
+
+
 ```
-
-![](README_files/figure-html/hhiPlot-1.png)<!-- -->
 ## Calculate Lowpass FFT
+```{r hhiFft}
 
-```r
 pt1 <- hhi
 pt1 <- pt1[order(pt1$ts),]
 
@@ -633,6 +534,10 @@ pt1$prec1 <- pic1
 pic5 <- Re(fft(frq5, inverse = TRUE)/length(frq5))
 pic5 <- pic5[1:len]
 pt1$prec5 <- pic5
+
+
+
+
 ```
 
 
@@ -640,8 +545,7 @@ pt1$prec5 <- pic5
 
 ## Plot Historical Humidity Index
 
-
-```r
+```{r hdiPlot}
 library("RColorBrewer")
 library("ggplot2")
 
@@ -662,12 +566,8 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   geom_hline(aes(yintercept = 6+0)) +
   geom_line(aes(y=6+1.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=0.25) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
-```
-
-![](README_files/figure-html/hdiPlot-1.png)<!-- -->
-
-```r
   #geom_line(aes(y=10+0.5*pt1$hhim, x=pt1$time)) 
+
 ```
 
 

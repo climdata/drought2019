@@ -12,6 +12,12 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Reconstructions of Droughts in Germany since 1500
+
+[![DOI](https://www.zenodo.org/badge/206506760.svg)](https://www.zenodo.org/badge/latestdoi/206506760)
+
+The present code deals with the reconstruction of drought time series in Germany since 1500. The reconstructions are based on written records from the historical climate and environmental database tambora.org, early and official instrument data as well as precipitation and temperature indices.
+
 ## Visualize tambora.org data related to droughts
 
 

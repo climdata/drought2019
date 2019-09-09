@@ -74,11 +74,10 @@ mp <- mp +
   geom_point(aes(x=grp_d_de$longitude, y=grp_d_de$latitude, size=(grp_d_de$count), color="Drought"), alpha=0.7, shape=20)+
   scale_size_area(trans="sqrt") + 
   labs(fill="")+
-  theme_classic() +
-  #theme_classic(base_size=80) +
+  #theme_classic() +
+  theme_classic(base_size=80) +
   xlab("Longitude") + ylab("Latitude") +
-  ## size=40 for base_size=80; 2500*2500
-  guides(colour = guide_legend(override.aes = list(size=8))) +
+  guides(colour = guide_legend(override.aes = list(size=40))) +
   scale_x_continuous(limits=c(5,16), breaks=c(6,8,10,12,14)) +  
   scale_y_continuous(limits=c(47,55), breaks=c(48,50,52,54)) +
   
@@ -88,8 +87,7 @@ mp <- mp +
     breaks  = c("All", "Drought"),
     values = c("All"="#5555FF", "Drought"="#FF5555")              
     ) +
-   ## c(20,100) for base_size=80; 2500*2500
-   scale_size_continuous( range = c(4, 20), breaks=c(100,500,1000,5000,10000), name="Count")
+   scale_size_continuous( range = c(20, 100), breaks=c(100,500,1000,5000,10000), name="Count")
 ```
 
 ```
@@ -141,8 +139,8 @@ p1 <- p1[order(p1$ts),]
 
 mp <- ggplot(p1, aes(year, month))
 mp + geom_raster(aes(fill=pi))+
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
   scale_x_continuous(limits=c(1500,2020)) +  
@@ -206,7 +204,7 @@ hdispi <- merge(hiCal,spiCal, by=c("year","month"))
 plots <-  list()
 slopes <- list()
 offsets <- list()
-par(mfrow=c(6,2))
+#par(mfrow=c(3,4))
 for (m in c(1:12)) {
   yBreaks <-c(-15,-10,-5,0,5,10,15)
   if(m==1) {
@@ -229,18 +227,18 @@ for (m in c(1:12)) {
                         r2 = format(summary(mx)$r.squared, digits = 3)))
   eq <- as.character(as.expression(eq))
   p <- ggplot(data = df, aes(x = x, y = y)) +
-    #theme_classic(base_size=60) +
-    theme_classic(base_size=5) +
+    theme_classic(base_size=60) +
+    #theme_classic(base_size=5) +
     scale_x_continuous(breaks=c(-3,-2,-1,0,1,2,3), limits=c(-3.5,3.5)) +
     scale_y_continuous(breaks=yBreaks) +
     geom_hline(aes(yintercept=0)) +
     geom_vline(aes(xintercept=0)) +
     labs(x=toupper(spiCol), y=toupper(hdiCol), title="", subtitle="") +
     geom_smooth(method = "lm", se=TRUE, color="cyan", formula = y ~ x) +
-    #geom_point(color="#0000AA", alpha=0.3, size=5) +
-    #geom_text(x = 1.4, y = -3*slope, label = eq, parse = TRUE, size=15)
-    geom_point(color="#0000AA", alpha=0.3, size=0.3) +
-    geom_text(x = 1.0, y = -3*slope, label = eq, parse = TRUE, size=2)
+    geom_point(color="#0000AA", alpha=0.3, size=5) +
+    geom_text(x = 1.4, y = -3*slope, label = eq, parse = TRUE, size=15)
+    #geom_point(color="#0000AA", alpha=0.3, size=0.3) +
+    #geom_text(x = 1.0, y = -3*slope, label = eq, parse = TRUE, size=2)
   plots[[length(plots) + 1]] <- p
   slopes[[length(slopes) + 1]] <- slope
   offsets[[length(offsets)+ 1]] <- offset
@@ -249,7 +247,7 @@ for (m in c(1:12)) {
 
 
 margin = theme(plot.margin = unit(c(1,1,1,1), "mm"))
-p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=3)
+p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=4)
 ```
 
 ```
@@ -301,14 +299,14 @@ eq <- substitute(italic(slope) == a %.% italic(months)^b*","~~italic(r)^2~"="~r2
 eq <- as.character(as.expression(eq))
 
 p <- ggplot(data = df, aes(x = x, y = y)) +
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   labs(x="Months", y="Slope", title="", subtitle="") +
-  geom_path(x=df$x, y=exp(pred$fit+2*pred$se.fit), color='#0088bb', lwd=0.2) +
-  geom_path(x=df$x, y=exp(pred$fit-2*pred$se.fit), color='#0088bb', lwd=0.2) +
-  geom_path(x=df$x, y=exp(pred$fit+0*pred$se.fit), color='#0000AA', lwd=0.35) +
-  #geom_point(color="#0000AA", size=25) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=50)
-  geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=5)
+  geom_path(x=df$x, y=exp(pred$fit+2*pred$se.fit), color='#0088bb', lwd=2) +
+  geom_path(x=df$x, y=exp(pred$fit-2*pred$se.fit), color='#0088bb', lwd=2) +
+  geom_path(x=df$x, y=exp(pred$fit+0*pred$se.fit), color='#0000AA', lwd=3.5) +
+  geom_point(color="#0000AA", size=25) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=50)
+  #geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=5)
 
 p
 ```
@@ -335,14 +333,14 @@ eq <- substitute(italic(offset) == a + b %.% italic(months)*","~~italic(r)^2~"="
 eq <- as.character(as.expression(eq))
 
 p <- ggplot(data = df, aes(x = x, y = y)) +
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   labs(x="Months", y="Slope", title="", subtitle="") +
-  geom_path(x=df$x, y=pred$fit+2*pred$se.fit, color='#0088bb', lwd=0.2) +
-  geom_path(x=df$x, y=pred$fit-2*pred$se.fit, color='#0088bb', lwd=0.2) +
-  geom_path(x=df$x, y=pred$fit+0*pred$se.fit, color='#0000AA', lwd=0.35) +
-  #geom_point(color="#0000AA", size=25) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=50)
-  geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 0.05, label = eq, parse = TRUE, size=5)
+  geom_path(x=df$x, y=pred$fit+2*pred$se.fit, color='#0088bb', lwd=2) +
+  geom_path(x=df$x, y=pred$fit-2*pred$se.fit, color='#0088bb', lwd=2) +
+  geom_path(x=df$x, y=pred$fit+0*pred$se.fit, color='#0000AA', lwd=3.5) +
+  geom_point(color="#0000AA", size=25) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=50)
+  #geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 0.05, label = eq, parse = TRUE, size=5)
 
 p
 ```
@@ -383,14 +381,14 @@ write.table(hspi, file = "csv/spi_1500_2xxx.csv", append = FALSE, quote = TRUE, 
 
 ```r
 mp1 <- ggplot(hspi, aes()) +
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   #coord_cartesian(ylim=c(0,300)) +
   labs(x="Year", y="SPI", title="", subtitle="") +
   geom_hline(aes(yintercept=0)) +
-  geom_line(aes(y=hspi$spi3, x=hspi$ts, color="SPI03"), size=0.25) +
-  geom_line(aes(y=hspi$spi6, x=hspi$ts, color="SPI06"), size=0.25) +
-  geom_line(aes(y=hspi$spi12, x=hspi$ts, color="SPI12"), size=0.25) +
+  geom_line(aes(y=hspi$spi3, x=hspi$ts, color="SPI03"), size=2.5) +
+  geom_line(aes(y=hspi$spi6, x=hspi$ts, color="SPI06"), size=2.5) +
+  geom_line(aes(y=hspi$spi12, x=hspi$ts, color="SPI12"), size=2.5) +
   scale_color_manual(
     name = "", 
     labels = c("SPI3", "SPI6", "SPI12"),
@@ -532,15 +530,15 @@ eq <- as.character(as.expression(eq))
 
 
 mp1 <- ggplot() +
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   #coord_cartesian(ylim=c(-4,4)) +
   scale_y_continuous(breaks=c(-3,-2,-1,0,1,2,3), limits=c(-4,4)) +
   labs(x="Year", y="DI", title="", subtitle="") +
   geom_hline(aes(yintercept=0)) +
-  geom_line(aes(y=-spiCal$mdi, x=spiCal$ts, color="MDI"), size=0.25) +
-  geom_line(aes(y=hiCal$hdi, x=hiCal$ts, color="HDI"), size=0.25) +
-  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=4) +
+  geom_line(aes(y=-spiCal$mdi, x=spiCal$ts, color="MDI"), size=2.5) +
+  geom_line(aes(y=hiCal$hdi, x=hiCal$ts, color="HDI"), size=2.5) +
+  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=40) +
   scale_color_manual(
     name = "", 
     labels = c("MDI+", "HDI-"),
@@ -621,15 +619,15 @@ eq <- as.character(as.expression(eq))
 
 
 mp1 <- ggplot() +
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   #coord_cartesian(ylim=c(-4,4)) +
   scale_y_continuous(breaks=c(-3,-2,-1,0,1,2,3), limits=c(-4,4)) +
   labs(x="Year", y="DI (1y)", title="", subtitle="") +
   geom_hline(aes(yintercept=0)) +
-  geom_line(aes(y=-spiCal2$mdi, x=spiCal2$ts, color="MDI"), size=0.25) +
-  geom_line(aes(y=hiCal2$hdi, x=hiCal2$ts, color="HDI"), size=0.25) +
-  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=4) +
+  geom_line(aes(y=-spiCal2$mdi, x=spiCal2$ts, color="MDI"), size=2.5) +
+  geom_line(aes(y=hiCal2$hdi, x=hiCal2$ts, color="HDI"), size=2.5) +
+  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=40) +
   scale_color_manual(
     name = "", 
     labels = c("MDI+", "HDI-"),
@@ -656,21 +654,21 @@ library("RColorBrewer")
 
 ```r
 mp2 <- ggplot() +
-  #theme_classic(base_size=80) +
-  theme_classic() +  
+  theme_classic(base_size=80) +
+  #theme_classic() +  
   scale_y_continuous(breaks=c(-3,-2,-1,0,1,2,3), limits=c(-4,4)) +
   labs(x="Year", y="HDI       HWI", title="", subtitle="") +
   geom_hline(aes(yintercept=0)) +
-  geom_line(aes(y=hiFull$hwi5, x=hiFull$ts, color="a:HWI05"), size=0.1) +
-  geom_line(aes(y=hiFull$hwi4, x=hiFull$ts, color="b:HWI04"), size=0.15) +
-  geom_line(aes(y=hiFull$hwi3, x=hiFull$ts, color="c:HWI03"), size=0.2) +
-  geom_line(aes(y=hiFull$hwi2, x=hiFull$ts, color="d:HWI02"), size=0.25) +
-  geom_line(aes(y=hiFull$hwi1, x=hiFull$ts, color="e:HWI01"), size=0.3) +
-  geom_line(aes(y=hiFull$hdi5, x=hiFull$ts, color="j:HDI05"), size=0.1) +  
-  geom_line(aes(y=hiFull$hdi4, x=hiFull$ts, color="i:HDI04"), size=0.15) + 
-  geom_line(aes(y=hiFull$hdi3, x=hiFull$ts, color="h:HDI03"), size=0.2) +  
-  geom_line(aes(y=hiFull$hdi2, x=hiFull$ts, color="g:HDI02"), size=0.25) +  
-  geom_line(aes(y=hiFull$hdi1, x=hiFull$ts, color="f:HDI01"), size=0.3) +
+  geom_line(aes(y=hiFull$hwi5, x=hiFull$ts, color="a:HWI05"), size=1) +
+  geom_line(aes(y=hiFull$hwi4, x=hiFull$ts, color="b:HWI04"), size=1.5) +
+  geom_line(aes(y=hiFull$hwi3, x=hiFull$ts, color="c:HWI03"), size=2) +
+  geom_line(aes(y=hiFull$hwi2, x=hiFull$ts, color="d:HWI02"), size=2.5) +
+  geom_line(aes(y=hiFull$hwi1, x=hiFull$ts, color="e:HWI01"), size=3) +
+  geom_line(aes(y=hiFull$hdi5, x=hiFull$ts, color="j:HDI05"), size=1) +  
+  geom_line(aes(y=hiFull$hdi4, x=hiFull$ts, color="i:HDI04"), size=1.5) + 
+  geom_line(aes(y=hiFull$hdi3, x=hiFull$ts, color="h:HDI03"), size=2) +  
+  geom_line(aes(y=hiFull$hdi2, x=hiFull$ts, color="g:HDI02"), size=2.5) +  
+  geom_line(aes(y=hiFull$hdi1, x=hiFull$ts, color="f:HDI01"), size=3) +
   scale_color_manual(
     name = "", 
     labels = c("HWI5", "HWI4", "HWI3", "HWI2", "HWI1",
@@ -748,8 +746,8 @@ mp <- ggplot(pt1, aes())
 mp + geom_raster(aes(year,month, fill=hhi))+
   geom_raster(aes(year,-1, fill=1.5*prec5))+
   geom_raster(aes(year,-2, fill=0.75*prec1))+
-  theme_classic() +
-  #theme_classic(base_size=80) +
+  #theme_classic() +
+  theme_classic(base_size=80) +
   scale_y_continuous(breaks=c(-2,-1,1,6,12), lab=c("1y","5y","1","6","12"))+
   scale_x_continuous(limits=c(1500,2020)) +  
   #scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30") +
@@ -757,7 +755,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE)) +
   geom_hline(aes(yintercept = 6+0)) +
-  geom_line(aes(y=6+1.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=0.25) +
+  geom_line(aes(y=6+1.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 

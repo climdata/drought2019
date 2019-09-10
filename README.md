@@ -538,7 +538,7 @@ mp1 <- ggplot() +
   geom_hline(aes(yintercept=0)) +
   geom_line(aes(y=-spiCal$mdi, x=spiCal$ts, color="MDI"), size=2.5) +
   geom_line(aes(y=hiCal$hdi, x=hiCal$ts, color="HDI"), size=2.5) +
-  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=40) +
+  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=20) +
   scale_color_manual(
     name = "", 
     labels = c("MDI+", "HDI-"),
@@ -627,7 +627,7 @@ mp1 <- ggplot() +
   geom_hline(aes(yintercept=0)) +
   geom_line(aes(y=-spiCal2$mdi, x=spiCal2$ts, color="MDI"), size=2.5) +
   geom_line(aes(y=hiCal2$hdi, x=hiCal2$ts, color="HDI"), size=2.5) +
-  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=40) +
+  annotate('text', x = 1990, y = 3.0, label = eq, parse = TRUE, size=20) +
   scale_color_manual(
     name = "", 
     labels = c("MDI+", "HDI-"),

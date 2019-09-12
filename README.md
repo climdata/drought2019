@@ -15,6 +15,7 @@ output:
 [![DOI](https://www.zenodo.org/badge/206506760.svg)](https://www.zenodo.org/badge/latestdoi/206506760)
 
 [DOI:10.5281/zenodo.3405167](https://doi.org/10.5281/zenodo.3405167)
+[DOI:10.5194/cp-2019-104](https://doi.org/10.5194/cp-2019-104)
 
 The present code deals with the reconstruction of drought time series in Germany since 1500. The reconstructions are based on written records from the historical climate and environmental database tambora.org, early and official instrument data as well as precipitation and temperature indices.
 

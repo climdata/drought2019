@@ -105,6 +105,30 @@ mp + geom_raster(aes(fill=pi))+
   guides(fill=guide_legend(title="PI", reverse = TRUE))  
 ```
 
+## Visialize Monthly Temperature Data (TI)
+
+
+```{r ti, fig.width=50, fig.height=25}
+
+require("ggplot2")
+library("RColorBrewer")
+
+tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
+
+t1 <- tempCompl
+t1 <- t1[order(p1$ts),]
+mp <- ggplot(t1, aes(year, month))
+mp + geom_raster(aes(fill=ti))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(1,6,12))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=tempColors) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="TI", reverse = TRUE))  
+
+```
 
 ## Calibration Historical Precipitation Index (HPI) vs Standard Precipitation Index (SPI)
 

@@ -154,6 +154,41 @@ mp + geom_raster(aes(fill=pi))+
 
 ![](README_files/figure-html/pi-1.png)<!-- -->
 
+## Visialize Monthly Temperature Data (TI)
+
+
+
+```r
+require("ggplot2")
+library("RColorBrewer")
+```
+
+```
+## Warning: package 'RColorBrewer' was built under R version 3.5.2
+```
+
+```r
+tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
+
+t1 <- tempCompl
+t1 <- t1[order(p1$ts),]
+mp <- ggplot(t1, aes(year, month))
+mp + geom_raster(aes(fill=ti))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(1,6,12))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=tempColors) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="TI", reverse = TRUE))  
+```
+
+```
+## Warning: Removed 224 rows containing missing values (geom_raster).
+```
+
+![](README_files/figure-html/ti-1.png)<!-- -->
 
 ## Calibration Historical Precipitation Index (HPI) vs Standard Precipitation Index (SPI)
 
@@ -649,13 +684,6 @@ mp1
 
 ```r
 library("RColorBrewer")
-```
-
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 mp2 <- ggplot() +
   theme_classic(base_size=80) +
   #theme_classic() +  

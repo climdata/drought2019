@@ -616,3 +616,53 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 
+## Frequence Analysis of SPI
+```{r fftPlot, fig.width=50, fig.height=25}
+
+pic <- hspi$spi1
+len <- length(pic)
+## mirror pic
+pic <- append(pic, pic)
+for(i in 1:len) {
+  pic[i+len] <- pic[1+len-i]
+}
+frq <- fft(pic, inverse = FALSE)
+
+breakYears=c(10,11,12,13,14,16,18,22,29,37,58,100,500)
+breaksFreq=length(frq)/(12*breakYears)
+labelsYears=lapply(breakYears, (function(year) substitute(frac(1, y), list(y=year)) ))
+labelsYears=lapply(breakYears, (function(year) paste("1", year, sep="/") ))
+
+df <- data.frame(freq = 0:(start), amp = Mod(frq)[1:(start+1)])
+df$labels <- length(frq)/(12*df$freq)
+#subset(df, df$amp>1000)
+ggplot(aes(), data=df) +
+  theme_classic(base_size=80) +
+  geom_segment(aes(y=df$amp, x=df$freq, xend = df$freq, yend = 0.0*df$amp), size=4) +
+  xlab("frequency [1/y]") + ylab("amplitude") +
+  #scale_x_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100))
+  scale_x_continuous(breaks=breaksFreq, lab=labelsYears)
+
+```
+
+
+## Seasonal Trends of SPI (Winter)
+
+```{r winterPlot, fig.width=50, fig.height=25}
+spi.apr <- subset(hspi, hspi$month == 4)   # w
+
+apr.ts <- ts(spi.apr$spi6, frequency=58, start=c(1500,1))
+apr.comp <- decompose(apr.ts)
+plot(apr.comp)
+```
+
+## Seasonal Trends of SPI (summer)
+
+```{r summerPlot, fig.width=50, fig.height=25}
+spi.oct <- subset(hspi, hspi$month == 10)  # s
+
+oct.ts <- ts(spi.oct$spi6, frequency=58, start=c(1500,1))
+oct.comp <- decompose(oct.ts)
+plot(oct.comp)
+
+```

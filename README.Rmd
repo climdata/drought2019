@@ -308,16 +308,16 @@ mp1 <- ggplot(hspi, aes()) +
   theme_classic(base_size=80) +
   #theme_classic() +
   #coord_cartesian(ylim=c(0,300)) +
-  labs(x="Year", y="SPI", title="", subtitle="") +
+  labs(x="Year", y="HSPI", title="", subtitle="") +
   geom_hline(aes(yintercept=0)) +
-  geom_line(aes(y=hspi$spi3, x=hspi$ts, color="SPI03"), size=2.5) +
-  geom_line(aes(y=hspi$spi6, x=hspi$ts, color="SPI06"), size=2.5) +
-  geom_line(aes(y=hspi$spi12, x=hspi$ts, color="SPI12"), size=2.5) +
+  geom_line(aes(y=hspi$spi3, x=hspi$ts, color="HSPI03"), size=2.5) +
+  geom_line(aes(y=hspi$spi6, x=hspi$ts, color="HSPI06"), size=2.5) +
+  geom_line(aes(y=hspi$spi12, x=hspi$ts, color="HSPI12"), size=2.5) +
   scale_color_manual(
     name = "", 
-    labels = c("SPI3", "SPI6", "SPI12"),
-    breaks  = c("SPI03", "SPI06", "SPI12"),
-    values = c("SPI03"="#33ddff", "SPI06"="#0088bb","SPI12"="#003344")
+    labels = c("HSPI3", "HSPI6", "HSPI12"),
+    breaks  = c("HSPI03", "HSPI06", "HSPI12"),
+    values = c("HSPI03"="#33ddff", "HSPI06"="#0088bb","HSPI12"="#003344")
   ) + 
   #guides(linetype = guide_legend(override.aes = list(size = 6))) +
   theme( legend.key.width = unit(2,"cm")) 

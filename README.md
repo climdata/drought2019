@@ -20,6 +20,8 @@ output:
 
 The present code deals with the reconstruction of drought time series in Germany since 1500. The reconstructions are based on written records from the historical climate and environmental database tambora.org, early and official instrument data as well as precipitation and temperature indices.
 
+![Concept](README_files\figure-html\fig2_concept.png)
+
 ## Visualize tambora.org data related to droughts
 
 

@@ -24,6 +24,30 @@ The present code deals with the reconstruction of drought time series in Germany
 
 ![Concept](README_files/figure-html/fig2_concept.png)
 
+```{r helpers}
+
+do_fft <- function(pic, filterYears) {
+  len <- length(pic)
+  ## mirror pic
+  pic <- append(pic, pic)
+  for(i in 1:len) {
+    pic[i+len] <- pic[1+len-i]
+  }
+  frq <- fft(pic, inverse = FALSE)
+  frq1 <- frq
+  start = round(len/(12*filterYears)) ## monthly
+  stop  = round(2*len-start)
+  frq1[start:stop] <- 0.0 
+  pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
+  pic1 <- pic1[1:len]
+  return(pic1)
+}
+
+```
+
+ 
+
+
 ## Visualize tambora.org data related to droughts
 
 
@@ -455,39 +479,45 @@ hiCal2 <- subset(hiFull, hiFull$year>1880 & hiFull$year<1996)
 hiCal2 <- hiCal[order(hiCal$ts),]
 spiCal2 <- spiCal
 #FFT for HDI
-pic <- hiCal2$hdi
-len <- length(pic)
+
+#pic <- hiCal2$hdi
+#len <- length(pic)
 ## mirror pic
-pic <- append(pic, pic)
-for(i in 1:len) {
-  pic[i+len] <- pic[1+len-i]
-}
-frq <- fft(pic, inverse = FALSE)
-frq1 <- frq
+#pic <- append(pic, pic)
+#for(i in 1:len) {
+#  pic[i+len] <- pic[1+len-i]
+#}
+#frq <- fft(pic, inverse = FALSE)
+#frq1 <- frq
 filterYears = 1.0   #filter 1y
-start = round(len/(12*filterYears))
-stop  = round(2*len-start)
-frq1[start:stop] <- 0.0 
-pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-pic1 <- pic1[1:len]
-hiCal2$hdi <- pic1
+#start = round(len/(12*filterYears))
+#stop  = round(2*len-start)
+#frq1[start:stop] <- 0.0 
+#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
+#pic1 <- pic1[1:len]
+#hiCal2$hdi <- pic1
+hiCal2$hdi <- do_fft(hiCal2$hdi,filterYears)
+
+
 ## FFt for MDI
-pic <- spiCal2$mdi
-len <- length(pic)
+
+#pic <- spiCal2$mdi
+#len <- length(pic)
 ## mirror pic
-pic <- append(pic, pic)
-for(i in 1:len) {
-  pic[i+len] <- pic[1+len-i]
-}
-frq <- fft(pic, inverse = FALSE)
-frq1 <- frq
+#pic <- append(pic, pic)
+#for(i in 1:len) {
+#  pic[i+len] <- pic[1+len-i]
+#}
+#frq <- fft(pic, inverse = FALSE)
+#frq1 <- frq
 ##filterYears = 1.0   #filter 1y
-start = round(len/(12*filterYears))
-stop  = round(2*len-start)
-frq1[start:stop] <- 0.0 
-pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-pic1 <- pic1[1:len]
-spiCal2$mdi <- pic1
+#start = round(len/(12*filterYears))
+#stop  = round(2*len-start)
+#frq1[start:stop] <- 0.0 
+#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
+#pic1 <- pic1[1:len]
+#spiCal2$mdi <- pic1
+spiCal2$mdi <- do_fft(spiCal2$mdi,filterYears)
 ```
 
 ## Plot HDI & MDI (1y)
@@ -567,31 +597,36 @@ mp2
 ```{r hhiFft}
 pt1 <- hhi
 pt1 <- pt1[order(pt1$ts),]
-pic <- pt1$hhi
-len <- length(pic)
+#pic <- pt1$hhi
+#len <- length(pic)
 ## mirror pic
-pic <- append(pic, pic)
-for(i in 1:len) {
-  pic[i+len] <- pic[1+len-i]
-}
-frq <- fft(pic, inverse = FALSE)
-frq0 <- frq
-frq1 <- frq
-frq5 <- frq 
+#pic <- append(pic, pic)
+#for(i in 1:len) {
+#  pic[i+len] <- pic[1+len-i]
+#}
+#frq <- fft(pic, inverse = FALSE)
+#frq0 <- frq
+#frq1 <- frq
+#frq5 <- frq 
+#filterYears = 1.0   #filter 1y
+#start = round(len/(12*filterYears))
+#stop  = round(2*len-start)
+#frq1[start:stop] <- 0.0 
+#filterYears = 5.0   #filter 5y
+#start = round(len/(12*filterYears))
+#stop  = round(2*len-start)
+#frq5[start:stop] <- 0.0 
+#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
+#pic1 <- pic1[1:len]
+#pt1$prec1 <- pic1
+#pic5 <- Re(fft(frq5, inverse = TRUE)/length(frq5))
+#pic5 <- pic5[1:len]
+#pt1$prec5 <- pic5
 filterYears = 1.0   #filter 1y
-start = round(len/(12*filterYears))
-stop  = round(2*len-start)
-frq1[start:stop] <- 0.0 
+pt1$prec1 <- do_fft(pt1$hhi,filterYears)
 filterYears = 5.0   #filter 5y
-start = round(len/(12*filterYears))
-stop  = round(2*len-start)
-frq5[start:stop] <- 0.0 
-pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-pic1 <- pic1[1:len]
-pt1$prec1 <- pic1
-pic5 <- Re(fft(frq5, inverse = TRUE)/length(frq5))
-pic5 <- pic5[1:len]
-pt1$prec5 <- pic5
+pt1$prec5 <- do_fft(pt1$hhi,filterYears)
+
 ```
 
 
@@ -635,6 +670,8 @@ breaksFreq=length(frq)/(12*breakYears)
 labelsYears=lapply(breakYears, (function(year) substitute(frac(1, y), list(y=year)) ))
 labelsYears=lapply(breakYears, (function(year) paste("1", year, sep="/") ))
 
+filterYears = 5.0
+start = round(len/(12*filterYears))
 df <- data.frame(freq = 0:(start), amp = Mod(frq)[1:(start+1)])
 df$labels <- length(frq)/(12*df$freq)
 #subset(df, df$amp>1000)
@@ -667,4 +704,101 @@ oct.ts <- ts(spi.oct$spi6, frequency=58, start=c(1500,1))
 oct.comp <- decompose(oct.ts)
 plot(oct.comp)
 
+```
+
+## Extract Single Drought Periods
+
+```{r extractPeriods, fig.width=50, fig.height=25}
+
+filterYears <- 1/6  # 2 month
+pt1$hhi.f <- do_fft(pt1$hhi,filterYears)
+
+hhiLimit <- -1.2
+
+hhi_drought <- subset(pt1, pt1$hhi.f<hhiLimit)
+hhi_drought <- hhi_drought[order(hhi_drought$ts),]
+
+hhi_drought$n <- 0
+hhi_drought$hhi.fmax  <- hhi_drought$hhi.f
+hhi_drought$hhi.max   <- hhi_drought$hhi
+hhi_drought$hhi.sum   <- hhi_drought$hhi
+hhi_drought$hhi.avg   <- hhi_drought$hhi
+hhi_drought$month.max <- hhi_drought$month
+hhi_drought$year.max  <- hhi_drought$year
+hhi_drought$ts.max  <- hhi_drought$ts
+hhi_drought$ts.start  <- hhi_drought$ts
+hhi_drought$ts.stop   <- hhi_drought$ts
+hhi_drought$duration  <- 1
+hhi_drought$maximum   <- FALSE
+
+n <- 1
+for(i in 2:nrow(hhi_drought)) {
+      ## check if prevoius month
+      if((hhi_drought$ts.start[i]-hhi_drought$ts.stop[i-1]) < 0.1) {
+        hhi_drought$n[i] = n
+        hhi_drought$n[i-1] = n
+        if(hhi_drought$hhi.fmax[i] < hhi_drought$hhi.fmax[i-1]) {
+          hhi_drought$month.max[i-1] <- hhi_drought$month.max[i]
+          hhi_drought$year.max[i-1] <- hhi_drought$year.max[i]   
+          hhi_drought$ts.max[i-1] <- hhi_drought$ts.max[i]             
+          hhi_drought$maximum[i] <- TRUE
+          hhi_drought$maximum[i-1] <- FALSE          
+        } else {
+          hhi_drought$month.max[i] <- hhi_drought$month.max[i-1]
+          hhi_drought$year.max[i] <- hhi_drought$year.max[i-1]
+          hhi_drought$ts.max[i] <- hhi_drought$ts.max[i-1]          
+          #hhi_drought$maximum[i] <- FALSE
+          #hhi_drought$maximum[i-1] <- TRUE           
+        }
+        hhi_drought$hhi.fmax[i] <- min(hhi_drought$hhi.fmax[i],hhi_drought$hhi.fmax[i-1])
+        hhi_drought$hhi.max[i] <- min(hhi_drought$hhi.max[i],hhi_drought$hhi.max[i-1])
+        hhi_drought$hhi.sum[i] <- (hhi_drought$hhi.sum[i] + hhi_drought$hhi.sum[i-1])
+        hhi_drought$duration[i] <- (hhi_drought$duration[i] + hhi_drought$duration[i-1])
+        hhi_drought$ts.start[i] <- min(hhi_drought$ts.start[i],hhi_drought$ts.start[i-1])
+        hhi_drought$ts.stop[i]  <- max(hhi_drought$ts.stop[i],hhi_drought$ts.stop[i-1])
+      } else {
+        n <- n+1
+    }
+}
+
+for(i in nrow(hhi_drought):2) {
+  if(hhi_drought$n[i] == hhi_drought$n[i-1]) {
+    hhi_drought$hhi.fmax[i-1]  <- min(hhi_drought$hhi.fmax[i],hhi_drought$hhi.fmax[i-1])
+    hhi_drought$hhi.max[i-1]   <- min(hhi_drought$hhi.max[i],hhi_drought$hhi.max[i-1])
+    hhi_drought$month.max[i-1] <- hhi_drought$month.max[i]
+    hhi_drought$year.max[i-1]  <- hhi_drought$year.max[i]
+    hhi_drought$ts.max[i-1]  <- hhi_drought$ts.max[i]    
+    hhi_drought$duration[i-1]  <- hhi_drought$duration[i]
+    hhi_drought$ts.start[i-1]  <- hhi_drought$ts.start[i]
+    hhi_drought$ts.stop[i-1]   <- hhi_drought$ts.stop[i]    
+    hhi_drought$hhi.sum[i-1]   <- hhi_drought$hhi.sum[i]
+    if(hhi_drought$hhi.f[i-1] > hhi_drought$hhi.fmax[i]) {
+       hhi_drought$maximum[i-1] <- FALSE
+    }
+  }
+}
+
+hhi_drought$hhi.avg <- hhi_drought$hhi.sum / hhi_drought$duration
+
+hhi_periods <- subset(hhi_drought, hhi_drought$maximum)
+hhi_periods <- hhi_periods[order(hhi_periods$hhi.fmax),]
+
+drought_periods <- hhi_periods[,c('year','month','time', 'ts', 'hhi.fmax', 'hhi.max', 'hhi.sum', 'hhi.avg', 'duration', 'ts.start', 'ts.stop')]
+
+write.table(drought_periods, file = "csv/droughts_1500_2xxx.csv", append = FALSE, quote = TRUE, sep = ",",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")
+
+```
+
+## Plot Single Drought Periods
+
+```{r plotPeriods, fig.width=50, fig.height=25}
+
+droughtColors = brewer.pal(n = 12, name = "YlOrRd")
+
+ggplot(data=hhi_periods, aes(y=-hhi.fmax, x=year, size=duration, color=-hhi.avg, label=year)) +
+  geom_text(alpha=0.8, check_overlap = FALSE)+
+  scale_size(range = c(6, 16), name="Duration", trans="log")+
+  scale_color_gradientn(colors=droughtColors, limits=c(0.25,4))
 ```

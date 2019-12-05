@@ -957,7 +957,7 @@ hhi_periods <- hhi_periods[order(hhi_periods$hhi.fmax),]
 
 drought_periods <- hhi_periods[,c('year','month','time', 'ts', 'hhi.fmax', 'hhi.max', 'hhi.sum', 'hhi.avg', 'duration', 'ts.start', 'ts.stop')]
 
-write.table(drought_periods, file = "csv/droughts.csv", append = FALSE, quote = TRUE, sep = ",",
+write.table(drought_periods, file = "csv/droughts_1500_2xxx.csv", append = FALSE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")
 ```
@@ -966,19 +966,16 @@ write.table(drought_periods, file = "csv/droughts.csv", append = FALSE, quote = 
 
 
 ```r
-droughtColors = brewer.pal(n = 12, name = "YlOrRd")
-```
+droughtColors = brewer.pal(n = 5, name = "YlOrRd")
 
-```
-## Warning in brewer.pal(n = 12, name = "YlOrRd"): n too large, allowed maximum for palette YlOrRd is 9
-## Returning the palette you asked for with that many colors
-```
-
-```r
 ggplot(data=hhi_periods, aes(y=-hhi.fmax, x=year, size=duration, color=-hhi.avg, label=year)) +
+  theme_classic(base_size=80) +
+  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
+  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
+  xlab("Year") + ylab("HHI max") +
   geom_text(alpha=0.8, check_overlap = FALSE)+
-  scale_size(range = c(6, 16), name="Duration", trans="log")+
-  scale_color_gradientn(colors=droughtColors, limits=c(0.25,4))
+  scale_size(range = c(8, 28), name="Duration", trans="log", breaks=c(1,2,5,10,20))+
+  scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI Ø", breaks=c(0,1,2,3,4))
 ```
 
 ![](README_files/figure-html/plotPeriods-1.png)<!-- -->

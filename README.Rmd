@@ -795,10 +795,15 @@ write.table(drought_periods, file = "csv/droughts_1500_2xxx.csv", append = FALSE
 
 ```{r plotPeriods, fig.width=50, fig.height=25}
 
-droughtColors = brewer.pal(n = 12, name = "YlOrRd")
+droughtColors = brewer.pal(n = 5, name = "YlOrRd")
 
 ggplot(data=hhi_periods, aes(y=-hhi.fmax, x=year, size=duration, color=-hhi.avg, label=year)) +
+  theme_classic(base_size=80) +
+  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
+  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
+  xlab("Year") + ylab("HHI max") +
   geom_text(alpha=0.8, check_overlap = FALSE)+
-  scale_size(range = c(6, 16), name="Duration", trans="log")+
-  scale_color_gradientn(colors=droughtColors, limits=c(0.25,4))
+  scale_size(range = c(8, 28), name="Duration", trans="log", breaks=c(1,2,5,10,20))+
+  scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI Ø", breaks=c(0,1,2,3,4))
+
 ```

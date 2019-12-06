@@ -882,10 +882,10 @@ plot(oct.comp)
 
 
 ```r
-filterYears <- 1/6  # 2 month
+filterYears <- 1/7  # ~2 month
 pt1$hhi.f <- do_fft(pt1$hhi,filterYears)
 
-hhiLimit <- -1.2
+hhiLimit <- -0.5
 
 hhi_drought <- subset(pt1, pt1$hhi.f<hhiLimit)
 hhi_drought <- hhi_drought[order(hhi_drought$ts),]
@@ -909,7 +909,8 @@ for(i in 2:nrow(hhi_drought)) {
       if((hhi_drought$ts.start[i]-hhi_drought$ts.stop[i-1]) < 0.1) {
         hhi_drought$n[i] = n
         hhi_drought$n[i-1] = n
-        if(hhi_drought$hhi.fmax[i] < hhi_drought$hhi.fmax[i-1]) {
+        #if(hhi_drought$hhi.fmax[i] < hhi_drought$hhi.fmax[i-1]) {
+        if(hhi_drought$hhi.max[i] < hhi_drought$hhi.max[i-1]) {
           hhi_drought$month.max[i-1] <- hhi_drought$month.max[i]
           hhi_drought$year.max[i-1] <- hhi_drought$year.max[i]   
           hhi_drought$ts.max[i-1] <- hhi_drought$ts.max[i]             
@@ -930,6 +931,7 @@ for(i in 2:nrow(hhi_drought)) {
         hhi_drought$ts.stop[i]  <- max(hhi_drought$ts.stop[i],hhi_drought$ts.stop[i-1])
       } else {
         n <- n+1
+        hhi_drought$n[i] = n
     }
 }
 
@@ -944,7 +946,8 @@ for(i in nrow(hhi_drought):2) {
     hhi_drought$ts.start[i-1]  <- hhi_drought$ts.start[i]
     hhi_drought$ts.stop[i-1]   <- hhi_drought$ts.stop[i]    
     hhi_drought$hhi.sum[i-1]   <- hhi_drought$hhi.sum[i]
-    if(hhi_drought$hhi.f[i-1] > hhi_drought$hhi.fmax[i]) {
+    #if(hhi_drought$hhi.f[i-1] > hhi_drought$hhi.fmax[i]) {
+    if(hhi_drought$hhi[i-1] > hhi_drought$hhi.max[i]) {
        hhi_drought$maximum[i-1] <- FALSE
     }
   }
@@ -953,7 +956,7 @@ for(i in nrow(hhi_drought):2) {
 hhi_drought$hhi.avg <- hhi_drought$hhi.sum / hhi_drought$duration
 
 hhi_periods <- subset(hhi_drought, hhi_drought$maximum)
-hhi_periods <- hhi_periods[order(hhi_periods$hhi.fmax),]
+hhi_periods <- hhi_periods[order(hhi_periods$hhi.sum),]
 
 drought_periods <- hhi_periods[,c('year','month','time', 'ts', 'hhi.fmax', 'hhi.max', 'hhi.sum', 'hhi.avg', 'duration', 'ts.start', 'ts.stop')]
 
@@ -966,9 +969,11 @@ write.table(drought_periods, file = "csv/droughts_1500_2xxx.csv", append = FALSE
 
 
 ```r
+hhi_periods$hhi.cmax <- (1*hhi_periods$hhi.fmax + 2*hhi_periods$hhi.max)/3
+
 droughtColors = brewer.pal(n = 5, name = "YlOrRd")
 
-ggplot(data=hhi_periods, aes(y=-hhi.fmax, x=year, size=duration, color=-hhi.avg, label=year)) +
+ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg, label=year)) +
   theme_classic(base_size=80) +
   theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
   guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
@@ -979,3 +984,17 @@ ggplot(data=hhi_periods, aes(y=-hhi.fmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ![](README_files/figure-html/plotPeriods-1.png)<!-- -->
+
+```r
+ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, label=year)) +
+  theme_classic(base_size=80) +
+  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
+  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
+  xlab("Year") + ylab("HHI sum") +
+  geom_text(alpha=0.8, check_overlap = FALSE)+
+  scale_y_continuous(trans="log", breaks=c(1,2,5,10,20,50,100))+
+  scale_size(range = c(8, 28), name="HHI max", breaks=c(0,1,2,3,4,5))+
+  scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI avg", breaks=c(0,1,2,3,4))
+```
+
+![](README_files/figure-html/plotPeriods-2.png)<!-- -->

@@ -845,5 +845,5 @@ ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, 
 ### Video
 
 <video width="640" height="480" controls>
-  <source src="media/droughts_centered.avi" type="video/mp4">
+  <source src="media/droughts_centered.mp4" type="video/mp4">
 </video>

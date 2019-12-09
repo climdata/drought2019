@@ -882,7 +882,7 @@ plot(oct.comp)
 
 
 ```r
-filterYears <- 1/7  # ~2 month
+filterYears <- 1/7  # ~2 month   ##  
 pt1$hhi.f <- do_fft(pt1$hhi,filterYears)
 
 hhiLimit <- -0.5
@@ -986,6 +986,24 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ![](README_files/figure-html/plotPeriods-1.png)<!-- -->
 
 ```r
+ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg, label=year)) +
+  theme_classic(base_size=80) +
+  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
+  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
+  xlab("Year") + ylab("HHI max") +
+  geom_text(alpha=0.8, check_overlap = FALSE)+
+  scale_y_continuous(limits=c(3,4.2), breaks=c(3,3.2,3.4,3.6,3.8,4,4.2))+
+  scale_size(range = c(8, 28), name="Duration", trans="log", breaks=c(1,2,5,10,20))+
+  scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI Ø", breaks=c(0,1,2,3,4))
+```
+
+```
+## Warning: Removed 331 rows containing missing values (geom_text).
+```
+
+![](README_files/figure-html/plotPeriods-2.png)<!-- -->
+
+```r
 ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, label=year)) +
   theme_classic(base_size=80) +
   theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
@@ -997,4 +1015,28 @@ ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, 
   scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI avg", breaks=c(0,1,2,3,4))
 ```
 
-![](README_files/figure-html/plotPeriods-2.png)<!-- -->
+![](README_files/figure-html/plotPeriods-3.png)<!-- -->
+
+```r
+ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, label=year)) +
+  theme_classic(base_size=80) +
+  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
+  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
+  xlab("Year") + ylab("HHI sum") +
+  geom_text(alpha=0.8, check_overlap = FALSE)+
+  scale_y_continuous(trans="log", breaks=c(1,2,5,10,20,50,100,200), limits=c(20,200))+
+  scale_size(range = c(8, 28), name="HHI max", breaks=c(0,1,2,3,4,5))+
+  scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI avg", breaks=c(0,1,2,3,4))
+```
+
+```
+## Warning: Removed 335 rows containing missing values (geom_text).
+```
+
+![](README_files/figure-html/plotPeriods-4.png)<!-- -->
+
+### Video
+
+<video width="640" height="480" controls>
+  <source src="media/droughts_centered.avi" type="video/mp4">
+</video>

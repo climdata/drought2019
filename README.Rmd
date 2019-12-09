@@ -710,6 +710,10 @@ plot(oct.comp)
 
 ```{r extractPeriods, fig.width=50, fig.height=25}
 
+## https://github.com/climdata/drought2019/blob/03a18c900d0000e2c98697764910b6b9f1bef32a/csv/hhi_1500_2xxx.csv
+## hhi_orig <- read.csv("https://github.com/climdata/drought2019/blob/03a18c900d0000e2c98697764910b6b9f1bef32a/csv/hhi_1500_2xxx.csv", sep=",")
+
+
 filterYears <- 1/7  # ~2 month   ##  
 pt1$hhi.f <- do_fft(pt1$hhi,filterYears)
 

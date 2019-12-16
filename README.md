@@ -143,13 +143,12 @@ mp
 
 
 ```r
-tempCompl <- read.csv("https://raw.githubusercontent.com/climdata/glaser2010/master/csv/ti_1500_2xxx_monthly.csv", sep=",", na = "NA")
-tempFull <- tempCompl[,c("year","month","ti")]
-precCompl <- read.csv("https://raw.githubusercontent.com/climdata/glaser2019/master/csv/pi_1500_2xxx_monthly.csv", sep=",", na = "NA")
-precFull <- precCompl[,c("year","month","pi")]
+p0 <- read.csv("https://raw.githubusercontent.com/climdata/glaser2019/master/csv/pi_1500_2xxx_monthly.csv", sep=",", na = "NA")
 spifull <- read.csv("https://raw.githubusercontent.com/climdata/dwdSPI/master/csv/spi_de.csv", sep=",", na = "NA")
-#precCompl <- distinct(precCompl, year,month, .keep_all= TRUE)
-spinew <- subset(spifull, spifull$ts>max(precCompl$ts))
+
+#p0 <- distinct(p0, year,month, .keep_all= TRUE)
+
+spinew <- subset(spifull, spifull$ts>max(p0$ts))
 spinew <- spinew[, c("year","month","ts","time","spi1")]
 names(spinew)[names(spinew) == 'spi1'] <- 'pi'
 spinew <- spinew[order(spinew$ts),]
@@ -162,7 +161,7 @@ for(i in length(spinew$pi)) {
     spinew$pi[i] = -3.0
   }  
 }
-p1 <- rbind(precCompl, spinew)
+p1 <- rbind(p0, spinew)
 p1 <- p1[order(p1$ts),]
 mp <- ggplot(p1, aes(year, month))
 mp + geom_raster(aes(fill=pi))+
@@ -178,42 +177,6 @@ mp + geom_raster(aes(fill=pi))+
 ```
 
 ![](README_files/figure-html/pi-1.png)<!-- -->
-
-## Visialize Monthly Temperature Data (TI)
-
-
-
-```r
-require("ggplot2")
-library("RColorBrewer")
-```
-
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
-tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
-
-t1 <- tempCompl
-t1 <- t1[order(p1$ts),]
-mp <- ggplot(t1, aes(year, month))
-mp + geom_raster(aes(fill=ti))+
-  theme_classic(base_size=80) +
-  #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
-  scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2020)) +  
-  scale_fill_gradientn(colors=tempColors) + 
-  theme( legend.key.width = unit(2,"cm")) +
-  guides(fill=guide_legend(title="TI", reverse = TRUE))  
-```
-
-```
-## Warning: Removed 224 rows containing missing values (geom_raster).
-```
-
-![](README_files/figure-html/ti-1.png)<!-- -->
 
 ## Calibration Historical Precipitation Index (HPI) vs Standard Precipitation Index (SPI)
 
@@ -248,69 +211,13 @@ library(qdapTools)
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
-tps <- merge(spifull,precFull, by=c("year","month"))
-tps <- merge(tps,tempFull, by=c("year","month"))
-tps$t1 <- sin(tps$month*pi/6)
-tps$t2 <- cos(tps$month*pi/6)
-tps <- tps[order(tps$ts),]
-
-mx <- lm(spi1 ~ (pi+ti+t1+t2)^2, tps)
-#mx <- lm(spi1 ~ pi, tps)
-summary(mx)
-```
-
-```
-## 
-## Call:
-## lm(formula = spi1 ~ (pi + ti + t1 + t2)^2, data = tps)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -2.47032 -0.34117  0.03216  0.36628  2.17180 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.018325   0.015259  -1.201 0.229989    
-## pi           0.570965   0.011620  49.137  < 2e-16 ***
-## ti          -0.054445   0.014209  -3.832 0.000133 ***
-## t1           0.080588   0.021736   3.708 0.000218 ***
-## t2          -0.050919   0.021987  -2.316 0.020711 *  
-## pi:ti        0.023094   0.011055   2.089 0.036897 *  
-## pi:t1       -0.008405   0.016369  -0.513 0.607711    
-## pi:t2        0.018960   0.016294   1.164 0.244775    
-## ti:t1        0.099162   0.019602   5.059 4.79e-07 ***
-## ti:t2        0.219818   0.020092  10.941  < 2e-16 ***
-## t1:t2        0.186374   0.043185   4.316 1.71e-05 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.5613 on 1369 degrees of freedom
-## Multiple R-squared:  0.6856,	Adjusted R-squared:  0.6833 
-## F-statistic: 298.5 on 10 and 1369 DF,  p-value: < 2.2e-16
-```
-
-```r
-tps1 <- merge(precFull,tempFull, by=c("year","month"))
-tps1$t1 <- sin(tps1$month*pi/6)
-tps1$t2 <- cos(tps1$month*pi/6)
-tps1$ts <- signif(tps1$year + (tps1$month-0.5)/12, digits=6)
-tps1$time <- paste(tps1$year,tps1$month, '15 00:00:00', sep='-')
-tps1 <- tps1[order(tps1$ts),]
-
-pr <- predict(mx, newdata=tps1, se.fit=TRUE) 
-
-tps1$hdi1 <- pr$fit
-tps1$hdi_se1 <- pr$se
-
-
-
-hi <- tps1
-#hi$hdi1 <- hi$pi
+hi <- p0
+hi$hdi1 <- hi$pi
 hi <- hi[order(hi$ts),]
 prev <- hi$hdi1
 for (m in c(2,3,4,5,6,7,8,9,10,11,12)) {
   column <- paste("hdi", m, sep="")
-  hdi <- rollapply(hi$hdi1, width=m, by=1, FUN=sum)
+  hdi <- rollapply(hi$pi, width=m, by=1, FUN=sum)
   hi$hdi <- prev
   hi$hdi[m:length(hi$hdi)] <- hdi
   prev <- hi$hdi
@@ -354,7 +261,7 @@ for (m in c(1:12)) {
     labs(x=toupper(spiCol), y=toupper(hdiCol), title="", subtitle="") +
     geom_smooth(method = "lm", se=TRUE, color="cyan", formula = y ~ x) +
     geom_point(color="#0000AA", alpha=0.3, size=5) +
-    geom_text(x = 1.1, y = -3.2*slope, label = eq, parse = TRUE, size=15)
+    geom_text(x = 1.4, y = -3*slope, label = eq, parse = TRUE, size=15)
     #geom_point(color="#0000AA", alpha=0.3, size=0.3) +
     #geom_text(x = 1.0, y = -3*slope, label = eq, parse = TRUE, size=2)
   plots[[length(plots) + 1]] <- p
@@ -404,7 +311,8 @@ mx <- lm(log(df$y) ~ log(df$x), df)
 pred <- predict(mx, se.fit=TRUE)
 aSlope <- exp(unname(coef(mx)[1]))
 bSlope <- unname(coef(mx)[2])
-eq <- substitute(italic(s) == a %.% italic(m)^b*","~~italic(r)^2~"="~r2, 
+
+eq <- substitute(italic(slope) == a %.% italic(months)^b*","~~italic(r)^2~"="~r2, 
                  list(a = format(exp(unname(coef(mx)[1])), digits = 4),
                       b = format(unname(coef(mx)[2]), digits = 4),
                       r2 = format(summary(mx)$r.squared, digits = 4)))
@@ -416,7 +324,7 @@ p <- ggplot(data = df, aes(x = x, y = y)) +
   geom_path(x=df$x, y=exp(pred$fit+2*pred$se.fit), color='#0088bb', lwd=2) +
   geom_path(x=df$x, y=exp(pred$fit-2*pred$se.fit), color='#0088bb', lwd=2) +
   geom_path(x=df$x, y=exp(pred$fit+0*pred$se.fit), color='#0000AA', lwd=3.5) +
-  geom_point(color="#0000AA", size=25) + geom_text(x = 7.5, y = 0.9, label = eq, parse = TRUE, size=50)
+  geom_point(color="#0000AA", size=25) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=50)
   #geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=5)
 p
 ```
@@ -433,19 +341,20 @@ df$x <- c(1:12)
 mx <- lm(df$y ~ df$x, df)
 pred <- predict(mx, se.fit=TRUE)
 bOffset <- unname(coef(mx)[2])
-eq <- substitute(italic(o) == a + b %.% italic(m)*","~~italic(r)^2~"="~r2, 
-                 list(a = format(unname(coef(mx)[1]), digits = 2),
-                      b = format(unname(coef(mx)[2]), digits = 2),
+
+eq <- substitute(italic(offset) == a + b %.% italic(months)*","~~italic(r)^2~"="~r2, 
+                 list(a = format(unname(coef(mx)[1]), digits = 4),
+                      b = format(unname(coef(mx)[2]), digits = 4),
                       r2 = format(summary(mx)$r.squared, digits = 4)))
 eq <- as.character(as.expression(eq))
 p <- ggplot(data = df, aes(x = x, y = y)) +
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Months", y="Offset", title="", subtitle="") +
+  labs(x="Months", y="Slope", title="", subtitle="") +
   geom_path(x=df$x, y=pred$fit+2*pred$se.fit, color='#0088bb', lwd=2) +
   geom_path(x=df$x, y=pred$fit-2*pred$se.fit, color='#0088bb', lwd=2) +
   geom_path(x=df$x, y=pred$fit+0*pred$se.fit, color='#0000AA', lwd=3.5) +
-  geom_point(color="#0000AA", size=25) + geom_text(x = 7.5, y = 0.001, label = eq, parse = TRUE, size=50)
+  geom_point(color="#0000AA", size=25) + geom_text(x = 8, y = 2, label = eq, parse = TRUE, size=50)
   #geom_point(color="#0000AA", size=2) + geom_text(x = 8, y = 0.05, label = eq, parse = TRUE, size=5)
 p
 ```
@@ -639,43 +548,10 @@ hiCal2 <- hiCal[order(hiCal$ts),]
 spiCal2 <- spiCal
 #FFT for HDI
 
-#pic <- hiCal2$hdi
-#len <- length(pic)
-## mirror pic
-#pic <- append(pic, pic)
-#for(i in 1:len) {
-#  pic[i+len] <- pic[1+len-i]
-#}
-#frq <- fft(pic, inverse = FALSE)
-#frq1 <- frq
 filterYears = 1.0   #filter 1y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq1[start:stop] <- 0.0 
-#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-#pic1 <- pic1[1:len]
-#hiCal2$hdi <- pic1
 hiCal2$hdi <- do_fft(hiCal2$hdi,filterYears)
 
-
 ## FFt for MDI
-
-#pic <- spiCal2$mdi
-#len <- length(pic)
-## mirror pic
-#pic <- append(pic, pic)
-#for(i in 1:len) {
-#  pic[i+len] <- pic[1+len-i]
-#}
-#frq <- fft(pic, inverse = FALSE)
-#frq1 <- frq
-##filterYears = 1.0   #filter 1y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq1[start:stop] <- 0.0 
-#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-#pic1 <- pic1[1:len]
-#spiCal2$mdi <- pic1
 spiCal2$mdi <- do_fft(spiCal2$mdi,filterYears)
 ```
 
@@ -717,6 +593,13 @@ mp1
 
 ```r
 library("RColorBrewer")
+```
+
+```
+## Warning: package 'RColorBrewer' was built under R version 3.5.2
+```
+
+```r
 mp2 <- ggplot() +
   theme_classic(base_size=80) +
   #theme_classic() +  
@@ -763,31 +646,6 @@ mp2
 ```r
 pt1 <- hhi
 pt1 <- pt1[order(pt1$ts),]
-#pic <- pt1$hhi
-#len <- length(pic)
-## mirror pic
-#pic <- append(pic, pic)
-#for(i in 1:len) {
-#  pic[i+len] <- pic[1+len-i]
-#}
-#frq <- fft(pic, inverse = FALSE)
-#frq0 <- frq
-#frq1 <- frq
-#frq5 <- frq 
-#filterYears = 1.0   #filter 1y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq1[start:stop] <- 0.0 
-#filterYears = 5.0   #filter 5y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq5[start:stop] <- 0.0 
-#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-#pic1 <- pic1[1:len]
-#pt1$prec1 <- pic1
-#pic5 <- Re(fft(frq5, inverse = TRUE)/length(frq5))
-#pic5 <- pic5[1:len]
-#pt1$prec5 <- pic5
 filterYears = 1.0   #filter 1y
 pt1$prec1 <- do_fft(pt1$hhi,filterYears)
 filterYears = 5.0   #filter 5y
@@ -815,7 +673,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE)) +
   geom_hline(aes(yintercept = 6+0)) +
-  geom_line(aes(y=6+1.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
+  geom_line(aes(y=6+2.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 
@@ -1009,7 +867,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 332 rows containing missing values (geom_text).
+## Warning: Removed 341 rows containing missing values (geom_text).
 ```
 
 ![](README_files/figure-html/plotPeriods-2.png)<!-- -->
@@ -1027,4 +885,25 @@ ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, 
 ```
 
 ![](README_files/figure-html/plotPeriods-3.png)<!-- -->
+
+```r
+mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(6*(ts.start+ts.stop+1/12))))
+mp + 
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=-hhi, width=1, height=1))+
+  ##geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
+  ##geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
+  ##geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
+  ##geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+```
+
+![](README_files/figure-html/plotPeriods-4.png)<!-- -->
 

@@ -638,44 +638,10 @@ hiCal2 <- subset(hiFull, hiFull$year>1880 & hiFull$year<1996)
 hiCal2 <- hiCal[order(hiCal$ts),]
 spiCal2 <- spiCal
 #FFT for HDI
-
-#pic <- hiCal2$hdi
-#len <- length(pic)
-## mirror pic
-#pic <- append(pic, pic)
-#for(i in 1:len) {
-#  pic[i+len] <- pic[1+len-i]
-#}
-#frq <- fft(pic, inverse = FALSE)
-#frq1 <- frq
 filterYears = 1.0   #filter 1y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq1[start:stop] <- 0.0 
-#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-#pic1 <- pic1[1:len]
-#hiCal2$hdi <- pic1
 hiCal2$hdi <- do_fft(hiCal2$hdi,filterYears)
 
-
 ## FFt for MDI
-
-#pic <- spiCal2$mdi
-#len <- length(pic)
-## mirror pic
-#pic <- append(pic, pic)
-#for(i in 1:len) {
-#  pic[i+len] <- pic[1+len-i]
-#}
-#frq <- fft(pic, inverse = FALSE)
-#frq1 <- frq
-##filterYears = 1.0   #filter 1y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq1[start:stop] <- 0.0 
-#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-#pic1 <- pic1[1:len]
-#spiCal2$mdi <- pic1
 spiCal2$mdi <- do_fft(spiCal2$mdi,filterYears)
 ```
 
@@ -763,31 +729,6 @@ mp2
 ```r
 pt1 <- hhi
 pt1 <- pt1[order(pt1$ts),]
-#pic <- pt1$hhi
-#len <- length(pic)
-## mirror pic
-#pic <- append(pic, pic)
-#for(i in 1:len) {
-#  pic[i+len] <- pic[1+len-i]
-#}
-#frq <- fft(pic, inverse = FALSE)
-#frq0 <- frq
-#frq1 <- frq
-#frq5 <- frq 
-#filterYears = 1.0   #filter 1y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq1[start:stop] <- 0.0 
-#filterYears = 5.0   #filter 5y
-#start = round(len/(12*filterYears))
-#stop  = round(2*len-start)
-#frq5[start:stop] <- 0.0 
-#pic1 <- Re(fft(frq1, inverse = TRUE)/length(frq1))
-#pic1 <- pic1[1:len]
-#pt1$prec1 <- pic1
-#pic5 <- Re(fft(frq5, inverse = TRUE)/length(frq5))
-#pic5 <- pic5[1:len]
-#pt1$prec5 <- pic5
 filterYears = 1.0   #filter 1y
 pt1$prec1 <- do_fft(pt1$hhi,filterYears)
 filterYears = 5.0   #filter 5y
@@ -1027,4 +968,25 @@ ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, 
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-3.png)<!-- -->
+
+```r
+mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(6*(ts.start+ts.stop+1/12))))
+mp + 
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=-hhi, width=1, height=1))+
+  ##geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
+  ##geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
+  ##geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
+  ##geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+```
+
+![](PI_and_TI_files/figure-html/plotPeriods-4.png)<!-- -->
 

@@ -353,6 +353,8 @@ mp1
 ## Calculate Historical Drought Index(HDI) and Modern Drought Index (MDI)
 
 ```{r hdiCalc}
+extremeLimit <- 4.0  ## goes up to 5
+
 hiFull <- hspi
 ## Modern Drought Index MDI
 spiCal$mdi1 <- spiCal$spi1
@@ -370,7 +372,7 @@ for(i in 1:nrow(spiCal)) {
   spiCal$mdi4[i] <- max(-3.0,min(spiCal$spi4[i], spiCal$spi5[i], spiCal$spi6[i],spiCal$spi7[i], spiCal$spi8[i], spiCal$spi9[i],spiCal$spi10[i], 1.0, na.rm = TRUE))
   if (spiCal$mdi4[i]>-2.0) {spiCal$mdi4[i] = 0.0}
   
-  spiCal$mdi5[i] <- max(-4.0,min(spiCal$spi10[i], spiCal$spi11[i], spiCal$spi12[i], 1.0, na.rm = TRUE))
+  spiCal$mdi5[i] <- max(-extremeLimit,min(spiCal$spi10[i], spiCal$spi11[i], spiCal$spi12[i], 1.0, na.rm = TRUE))
   if (spiCal$mdi5[i]>-3.0) {spiCal$mdi5[i] = 0.0}   
   spiCal$mdi[i] <- min(spiCal$mdi1[i],spiCal$mdi2[i],spiCal$mdi3[i],spiCal$mdi4[i],spiCal$mdi5[i], 0.0, na.rm = TRUE)
 }
@@ -393,7 +395,7 @@ for(i in 1:nrow(hiFull)) {
   hiFull$hdi4[i] <- max(-3.0,min(hiFull$spi4[i], hiFull$spi5[i], hiFull$spi6[i],hiFull$spi7[i], hiFull$spi8[i], hiFull$spi9[i],hiFull$spi10[i], 1.0, na.rm = TRUE))
   if (hiFull$hdi4[i]>-2.0) {hiFull$hdi4[i] = 0.0}
   
-  hiFull$hdi5[i] <- max(-4.0,min(hiFull$spi10[i], hiFull$spi11[i], hiFull$spi12[i], 1.0, na.rm = TRUE))
+  hiFull$hdi5[i] <- max(-extremeLimit,min(hiFull$spi10[i], hiFull$spi11[i], hiFull$spi12[i], 1.0, na.rm = TRUE))
   if (hiFull$hdi5[i]>-3.0) {hiFull$hdi5[i] = 0.0}   
   
   hiFull$hdi[i] <- min(hiFull$hdi1[i],hiFull$hdi2[i],hiFull$hdi3[i],hiFull$hdi4[i],hiFull$hdi5[i], 0.0, na.rm = TRUE)
@@ -419,7 +421,7 @@ for(i in 1:nrow(hiFull)) {
   hiFull$hwi4[i] <- min(3.0,max(hiFull$spi4[i], hiFull$spi5[i], hiFull$spi6[i],hiFull$spi7[i], hiFull$spi8[i], hiFull$spi9[i],hiFull$spi10[i], -1.0, na.rm = TRUE))
   if (hiFull$hwi4[i]<2.0) {hiFull$hwi4[i] = 0.0}
   
-  hiFull$hwi5[i] <- min(4.0,max(hiFull$spi10[i], hiFull$spi11[i], hiFull$spi12[i], -1.0, na.rm = TRUE))
+  hiFull$hwi5[i] <- min(extremeLimit,max(hiFull$spi10[i], hiFull$spi11[i], hiFull$spi12[i], -1.0, na.rm = TRUE))
   if (hiFull$hwi5[i]<3.0) {hiFull$hwi5[i] = 0.0}   
   
   hiFull$hwi[i] <- max(hiFull$hwi1[i],hiFull$hwi2[i],hiFull$hwi3[i],hiFull$hwi4[i],hiFull$hwi5[i], 0.0, na.rm = TRUE)
@@ -710,16 +712,21 @@ plot(oct.comp)
 
 ```{r extractPeriods, fig.width=50, fig.height=25}
 
-## https://github.com/climdata/drought2019/blob/03a18c900d0000e2c98697764910b6b9f1bef32a/csv/hhi_1500_2xxx.csv
-## hhi_orig <- read.csv("https://github.com/climdata/drought2019/blob/03a18c900d0000e2c98697764910b6b9f1bef32a/csv/hhi_1500_2xxx.csv", sep=",")
-
-
-filterYears <- 1/7  # ~2 month   ##  
-pt1$hhi.f <- do_fft(pt1$hhi,filterYears)
-
 hhiLimit <- -0.5
+filterYears <- 1/7  # ~2 month   ##  
 
-hhi_drought <- subset(pt1, pt1$hhi.f<hhiLimit)
+## https://github.com/climdata/drought2019/blob/03a18c900d0000e2c98697764910b6b9f1bef32a/csv/hhi_1500_2xxx.csv
+hhi_orig <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/03a18c900d0000e2c98697764910b6b9f1bef32a/csv/hhi_1500_2xxx.csv", sep=",")
+
+
+hhi_p <- pt1
+hhi_p <- hhi_orig
+
+hhi_p$hhi.f <- do_fft(hhi_p$hhi,filterYears)
+hhi_drought <- subset(hhi_p, hhi_p$hhi.f<hhiLimit)
+
+
+
 hhi_drought <- hhi_drought[order(hhi_drought$ts),]
 
 hhi_drought$n <- 0
@@ -818,9 +825,9 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
   theme_classic(base_size=80) +
   theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
   guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
-  xlab("Year") + ylab("HHI max") +
+  xlab("Year") + ylab("HHI min") +
   geom_text(alpha=0.8, check_overlap = FALSE)+
-  scale_y_continuous(limits=c(3.2,4.2), breaks=c(3,3.2,3.4,3.6,3.8,4,4.2))+
+  scale_y_continuous(limits=c(2.999,4.2), breaks=c(3,3.2,3.4,3.6,3.8,4,4.2), labels=c('-3.0','-3.2','-3.4','-3.6','-3.8','-4.0','-4.2'))+
   scale_size(range = c(8, 28), name="Duration", trans="log", breaks=c(1,2,5,10,20), limits=c(5,60))+
   scale_color_gradientn(colors=droughtColors, limits=c(1,4), name="HHI Ø", breaks=c(0,1,2,3,4))
 
@@ -834,20 +841,6 @@ ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, 
   scale_size(range = c(8, 28), name="HHI max", breaks=c(0,1,2,3,4,5))+
   scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI avg", breaks=c(0,1,2,3,4))
 
-ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, label=year)) +
-  theme_classic(base_size=80) +
-  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
-  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
-  xlab("Year") + ylab("HHI sum") +
-  geom_text(alpha=0.8, check_overlap = FALSE)+
-  scale_y_continuous(trans="log", breaks=c(1,2,5,10,20,50,100,150,200), limits=c(20,150))+
-  scale_size(range = c(8, 28), name="HHI max", breaks=c(0,1,2,3,4,5), limits=c(2,5))+
-  scale_color_gradientn(colors=droughtColors, limits=c(1,4), name="HHI avg", breaks=c(0,1,2,3,4))
 
 ```
 
-### Video
-
-<video width="640" height="480" controls>
-  <source src="media/droughts_centered.mp4" type="video/mp4">
-</video>

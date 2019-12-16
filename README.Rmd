@@ -720,7 +720,7 @@ hhi_orig <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/03a
 
 
 hhi_p <- pt1
-hhi_p <- hhi_orig
+#hhi_p <- hhi_orig
 
 hhi_p$hhi.f <- do_fft(hhi_p$hhi,filterYears)
 hhi_drought <- subset(hhi_p, hhi_p$hhi.f<hhiLimit)
@@ -828,7 +828,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
   xlab("Year") + ylab("HHI min") +
   geom_text(alpha=0.8, check_overlap = FALSE)+
   scale_y_continuous(limits=c(2.999,4.2), breaks=c(3,3.2,3.4,3.6,3.8,4,4.2), labels=c('-3.0','-3.2','-3.4','-3.6','-3.8','-4.0','-4.2'))+
-  scale_size(range = c(8, 28), name="Duration", trans="log", breaks=c(1,2,5,10,20), limits=c(5,60))+
+  scale_size(range = c(8, 28), name="Duration", trans="log", breaks=c(1,2,5,10,20))+
   scale_color_gradientn(colors=droughtColors, limits=c(1,4), name="HHI Ø", breaks=c(0,1,2,3,4))
 
 ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, label=year)) +

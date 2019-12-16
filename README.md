@@ -143,12 +143,13 @@ mp
 
 
 ```r
-p0 <- read.csv("https://raw.githubusercontent.com/climdata/glaser2019/master/csv/pi_1500_2xxx_monthly.csv", sep=",", na = "NA")
+tempCompl <- read.csv("https://raw.githubusercontent.com/climdata/glaser2010/master/csv/ti_1500_2xxx_monthly.csv", sep=",", na = "NA")
+tempFull <- tempCompl[,c("year","month","ti")]
+precCompl <- read.csv("https://raw.githubusercontent.com/climdata/glaser2019/master/csv/pi_1500_2xxx_monthly.csv", sep=",", na = "NA")
+precFull <- precCompl[,c("year","month","pi")]
 spifull <- read.csv("https://raw.githubusercontent.com/climdata/dwdSPI/master/csv/spi_de.csv", sep=",", na = "NA")
-
-#p0 <- distinct(p0, year,month, .keep_all= TRUE)
-
-spinew <- subset(spifull, spifull$ts>max(p0$ts))
+#precCompl <- distinct(precCompl, year,month, .keep_all= TRUE)
+spinew <- subset(spifull, spifull$ts>max(precCompl$ts))
 spinew <- spinew[, c("year","month","ts","time","spi1")]
 names(spinew)[names(spinew) == 'spi1'] <- 'pi'
 spinew <- spinew[order(spinew$ts),]
@@ -161,7 +162,7 @@ for(i in length(spinew$pi)) {
     spinew$pi[i] = -3.0
   }  
 }
-p1 <- rbind(p0, spinew)
+p1 <- rbind(precCompl, spinew)
 p1 <- p1[order(p1$ts),]
 mp <- ggplot(p1, aes(year, month))
 mp + geom_raster(aes(fill=pi))+
@@ -177,6 +178,42 @@ mp + geom_raster(aes(fill=pi))+
 ```
 
 ![](README_files/figure-html/pi-1.png)<!-- -->
+
+## Visialize Monthly Temperature Data (TI)
+
+
+
+```r
+require("ggplot2")
+library("RColorBrewer")
+```
+
+```
+## Warning: package 'RColorBrewer' was built under R version 3.5.2
+```
+
+```r
+tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
+
+t1 <- tempCompl
+t1 <- t1[order(p1$ts),]
+mp <- ggplot(t1, aes(year, month))
+mp + geom_raster(aes(fill=ti))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(1,6,12))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=tempColors) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="TI", reverse = TRUE))  
+```
+
+```
+## Warning: Removed 227 rows containing missing values (geom_raster).
+```
+
+![](README_files/figure-html/ti-1.png)<!-- -->
 
 ## Calibration Historical Precipitation Index (HPI) vs Standard Precipitation Index (SPI)
 
@@ -211,7 +248,7 @@ library(qdapTools)
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
-hi <- p0
+hi <- precCompl
 hi$hdi1 <- hi$pi
 hi <- hi[order(hi$ts),]
 prev <- hi$hdi1
@@ -547,7 +584,6 @@ hiCal2 <- subset(hiFull, hiFull$year>1880 & hiFull$year<1996)
 hiCal2 <- hiCal[order(hiCal$ts),]
 spiCal2 <- spiCal
 #FFT for HDI
-
 filterYears = 1.0   #filter 1y
 hiCal2$hdi <- do_fft(hiCal2$hdi,filterYears)
 
@@ -593,13 +629,6 @@ mp1
 
 ```r
 library("RColorBrewer")
-```
-
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 mp2 <- ggplot() +
   theme_classic(base_size=80) +
   #theme_classic() +  
@@ -846,8 +875,9 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
   theme_classic(base_size=80) +
   theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
   guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
-  xlab("Year") + ylab("HHI max") +
+  xlab("Year") + ylab("HHI min") +
   geom_text(alpha=0.8, check_overlap = FALSE)+
+  scale_y_continuous(limits=c(0.1,4.2), breaks=c(0.5,1,1.5,2,2.5,3,3.5,4), labels=c('-0.5','-1.0','-1.5','-2.0','-2.5','-3.0','-3.5','-4.0'))+  
   scale_size(range = c(8, 28), name="Duration", trans="log", breaks=c(1,2,5,10,20))+
   scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI Ø", breaks=c(0,1,2,3,4))
 ```
@@ -873,20 +903,17 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ![](README_files/figure-html/plotPeriods-2.png)<!-- -->
 
 ```r
-ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, label=year)) +
-  theme_classic(base_size=80) +
-  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
-  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
-  xlab("Year") + ylab("HHI sum") +
-  geom_text(alpha=0.8, check_overlap = FALSE)+
-  scale_y_continuous(trans="log", breaks=c(1,2,5,10,20,50,100))+
-  scale_size(range = c(8, 28), name="HHI max", breaks=c(0,1,2,3,4,5))+
-  scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI avg", breaks=c(0,1,2,3,4))
-```
+#ggplot(data=hhi_periods, aes(y=-hhi.sum, x=year, size=-hhi.max, color=-hhi.avg, #label=year)) +
+#  theme_classic(base_size=80) +
+#  theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
+#  guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
+#  xlab("Year") + ylab("HHI sum") +
+#  geom_text(alpha=0.8, check_overlap = FALSE)+
+#  scale_y_continuous(trans="log", breaks=c(1,2,5,10,20,50,100))+
+#  scale_size(range = c(8, 28), name="HHI max", breaks=c(0,1,2,3,4,5))+
+#  scale_color_gradientn(colors=droughtColors, limits=c(0,4), name="HHI avg", #breaks=c(0,1,2,3,4))
 
-![](README_files/figure-html/plotPeriods-3.png)<!-- -->
 
-```r
 mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(6*(ts.start+ts.stop+1/12))))
 mp + 
   #geom_raster(aes(fill=-hhi))+
@@ -899,6 +926,27 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+```
+
+![](README_files/figure-html/plotPeriods-3.png)<!-- -->
+
+```r
+mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1/24))))
+mp + 
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=-hhi, width=1, height=1))+
+  ##geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
+  ##geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
+  ##geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
+  ##geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Months", title="", subtitle="") +
+  scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
   scale_x_continuous(limits=c(1500,2020)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +

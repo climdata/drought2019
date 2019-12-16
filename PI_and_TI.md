@@ -210,7 +210,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 224 rows containing missing values (geom_raster).
+## Warning: Removed 227 rows containing missing values (geom_raster).
 ```
 
 ![](PI_and_TI_files/figure-html/ti-1.png)<!-- -->
@@ -266,27 +266,27 @@ summary(mx)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.47032 -0.34117  0.03216  0.36628  2.17180 
+## -2.46964 -0.34066  0.03096  0.36613  2.17475 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.018325   0.015259  -1.201 0.229989    
-## pi           0.570965   0.011620  49.137  < 2e-16 ***
-## ti          -0.054445   0.014209  -3.832 0.000133 ***
-## t1           0.080588   0.021736   3.708 0.000218 ***
-## t2          -0.050919   0.021987  -2.316 0.020711 *  
-## pi:ti        0.023094   0.011055   2.089 0.036897 *  
-## pi:t1       -0.008405   0.016369  -0.513 0.607711    
-## pi:t2        0.018960   0.016294   1.164 0.244775    
-## ti:t1        0.099162   0.019602   5.059 4.79e-07 ***
-## ti:t2        0.219818   0.020092  10.941  < 2e-16 ***
-## t1:t2        0.186374   0.043185   4.316 1.71e-05 ***
+## (Intercept) -0.018190   0.015280  -1.190 0.234095    
+## pi           0.571533   0.011636  49.117  < 2e-16 ***
+## ti          -0.054574   0.014229  -3.835 0.000131 ***
+## t1           0.080788   0.021766   3.712 0.000214 ***
+## t2          -0.050243   0.022017  -2.282 0.022644 *  
+## pi:ti        0.023148   0.011071   2.091 0.036719 *  
+## pi:t1       -0.009373   0.016392  -0.572 0.567549    
+## pi:t2        0.019394   0.016317   1.189 0.234796    
+## ti:t1        0.099314   0.019630   5.059 4.78e-07 ***
+## ti:t2        0.219752   0.020119  10.922  < 2e-16 ***
+## t1:t2        0.185162   0.043245   4.282 1.98e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 0.5613 on 1369 degrees of freedom
-## Multiple R-squared:  0.6856,	Adjusted R-squared:  0.6833 
-## F-statistic: 298.5 on 10 and 1369 DF,  p-value: < 2.2e-16
+## Residual standard error: 0.562 on 1369 degrees of freedom
+## Multiple R-squared:  0.6854,	Adjusted R-squared:  0.6831 
+## F-statistic: 298.2 on 10 and 1369 DF,  p-value: < 2.2e-16
 ```
 
 ```r
@@ -756,7 +756,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE)) +
   geom_hline(aes(yintercept = 6+0)) +
-  geom_line(aes(y=6+1.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
+  geom_line(aes(y=6+2.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 
@@ -950,7 +950,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 332 rows containing missing values (geom_text).
+## Warning: Removed 330 rows containing missing values (geom_text).
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-2.png)<!-- -->
@@ -989,4 +989,25 @@ mp +
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-4.png)<!-- -->
+
+```r
+mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1/24))))
+mp + 
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=-hhi, width=1, height=1))+
+  ##geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
+  ##geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
+  ##geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
+  ##geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Months", title="", subtitle="") +
+  scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+```
+
+![](PI_and_TI_files/figure-html/plotPeriods-5.png)<!-- -->
 

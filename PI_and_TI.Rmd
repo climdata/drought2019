@@ -592,7 +592,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE)) +
   geom_hline(aes(yintercept = 6+0)) +
-  geom_line(aes(y=6+1.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
+  geom_line(aes(y=6+2.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 
@@ -795,6 +795,23 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
+  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+
+mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1/24))))
+mp + 
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=-hhi, width=1, height=1))+
+  ##geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
+  ##geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
+  ##geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
+  ##geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Months", title="", subtitle="") +
+  scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
   scale_x_continuous(limits=c(1500,2020)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +

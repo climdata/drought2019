@@ -57,20 +57,12 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
-```
-## Warning: package 'ggplot2' was built under R version 3.5.3
-```
-
 ```r
 require("extrafont")
 ```
 
 ```
 ## Loading required package: extrafont
-```
-
-```
-## Warning: package 'extrafont' was built under R version 3.5.2
 ```
 
 ```
@@ -83,10 +75,6 @@ require("ggmap")
 
 ```
 ## Loading required package: ggmap
-```
-
-```
-## Warning: package 'ggmap' was built under R version 3.5.3
 ```
 
 ```
@@ -158,8 +146,8 @@ mp <- mp +
 ```
 
 ```
-## Scale for 'size' is already present. Adding another scale for 'size', which
-## will replace the existing scale.
+## Scale for 'size' is already present. Adding another scale for 'size',
+## which will replace the existing scale.
 ```
 
 ```r
@@ -262,13 +250,7 @@ mp + geom_raster(aes(fill=pi))+
 ```r
 require("ggplot2")
 library("RColorBrewer")
-```
 
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
 
 t1 <- tempCompl
@@ -299,10 +281,6 @@ library(zoo)
 ```
 
 ```
-## Warning: package 'zoo' was built under R version 3.5.3
-```
-
-```
 ## 
 ## Attaching package: 'zoo'
 ```
@@ -318,30 +296,23 @@ library("ggplot2")
 library(gridExtra)
 library(grid)
 library(qdapTools)
-```
-
-```
-## Warning: package 'qdapTools' was built under R version 3.5.3
-```
-
-```r
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
 hi <- precCompl
-hi$hdi1 <- hi$pi
+hi$hpi1 <- hi$pi
 hi <- hi[order(hi$ts),]
-prev <- hi$hdi1
+prev <- hi$hpi1
 for (m in c(2,3,4,5,6,7,8,9,10,11,12)) {
-  column <- paste("hdi", m, sep="")
-  hdi <- rollapply(hi$pi, width=m, by=1, FUN=sum)
-  hi$hdi <- prev
-  hi$hdi[m:length(hi$hdi)] <- hdi
-  prev <- hi$hdi
-  names(hi)[names(hi) == 'hdi'] <- column
+  column <- paste("hpi", m, sep="")
+  hpi <- rollapply(hi$pi, width=m, by=1, FUN=sum)
+  hi$hpi <- prev
+  hi$hpi[m:length(hi$hpi)] <- hpi
+  prev <- hi$hpi
+  names(hi)[names(hi) == 'hpi'] <- column
 }
 hiCal <- subset(hi, hi$year>1880 & hi$year<1996)
-hdispi <- merge(hiCal,spiCal, by=c("year","month"))
+hpispi <- merge(hiCal,spiCal, by=c("year","month"))
 
 plots <-  list()
 slopes <- list()
@@ -352,9 +323,9 @@ for (m in c(1:12)) {
   if(m==1) {
     yBreaks <-c(-3,-2,-1,0,1,2,3)
   }
-  hdiCol <- paste("hdi", m, sep="")
+  hpiCol <- paste("hpi", m, sep="")
   spiCol <- paste("spi", m, sep="")
-  df <- data.frame(y = hdispi[,hdiCol], x = hdispi[,spiCol])
+  df <- data.frame(y = hpispi[,hpiCol], x = hpispi[,spiCol])
   df <- subset(df, !is.na(df$x))
   mx <- lm(y ~ x, df);  
   slope <- unname(coef(mx)[2])
@@ -375,7 +346,7 @@ for (m in c(1:12)) {
     scale_y_continuous(breaks=yBreaks) +
     geom_hline(aes(yintercept=0)) +
     geom_vline(aes(xintercept=0)) +
-    labs(x=toupper(spiCol), y=toupper(hdiCol), title="", subtitle="") +
+    labs(x=toupper(spiCol), y=toupper(hpiCol), title="", subtitle="") +
     geom_smooth(method = "lm", se=TRUE, color="cyan", formula = y ~ x) +
     geom_point(color="#0000AA", alpha=0.3, size=5) +
     geom_text(x = 1.4, y = -3*slope, label = eq, parse = TRUE, size=15)
@@ -485,11 +456,11 @@ p
 ```r
 hspi <- hi[,c('year','month','time', 'ts')]
 for (m in c(1:12)) {
-  hdiCol <- paste("hdi", m, sep="")
+  hpiCol <- paste("hpi", m, sep="")
   spiCol <- paste("spi", m, sep="")
-  spi <- hi[,hdiCol] * m^(-1/sqrt(3.0))
+  spi <- hi[,hpiCol] * m^(-1/sqrt(3.0))
   # more exact reconstruction
-  spi <- (hi[,hdiCol] - bOffset * m)  / (aSlope * m^bSlope)
+  spi <- (hi[,hpiCol] - bOffset * m)  / (aSlope * m^bSlope)
   hspi$spi <- round(spi, digits=6)
   names(hspi)[names(hspi) == 'spi'] <- spiCol
 }

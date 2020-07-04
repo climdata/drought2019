@@ -14,7 +14,7 @@ output:
 
 [![DOI](https://www.zenodo.org/badge/206506760.svg)](https://www.zenodo.org/badge/latestdoi/206506760)
 
-[DOI:10.5281/zenodo.3405167](https://doi.org/10.5281/zenodo.3405167)
+[DOI:10.5281/zenodo.3401535](https://doi.org/10.5281/zenodo.3401535)
 
 [DOI:10.5194/cp-2019-104](https://doi.org/10.5194/cp-2019-104)
 
@@ -57,20 +57,12 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
-```
-## Warning: package 'ggplot2' was built under R version 3.5.3
-```
-
 ```r
 require("extrafont")
 ```
 
 ```
 ## Loading required package: extrafont
-```
-
-```
-## Warning: package 'extrafont' was built under R version 3.5.2
 ```
 
 ```
@@ -83,6 +75,14 @@ require("ggmap")
 
 ```
 ## Loading required package: ggmap
+```
+
+```
+## Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
+```
+
+```
+## Please cite ggmap if you use it! See citation("ggmap") for details.
 ```
 
 ```r
@@ -186,13 +186,7 @@ mp + geom_raster(aes(fill=pi))+
 ```r
 require("ggplot2")
 library("RColorBrewer")
-```
 
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
 
 t1 <- tempCompl
@@ -210,7 +204,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 227 rows containing missing values (geom_raster).
+## Warning: Removed 234 rows containing missing values (geom_raster).
 ```
 
 ![](PI_only_files/figure-html/ti-1.png)<!-- -->
@@ -238,13 +232,6 @@ library("ggplot2")
 library(gridExtra)
 library(grid)
 library(qdapTools)
-```
-
-```
-## Warning: package 'qdapTools' was built under R version 3.5.3
-```
-
-```r
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
@@ -318,19 +305,19 @@ p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=4)
 ```
 
 ```
-## Warning: Removed 4 rows containing non-finite values (stat_smooth).
-```
-
-```
-## Warning: Removed 4 rows containing missing values (geom_point).
-```
-
-```
 ## Warning: Removed 2 rows containing non-finite values (stat_smooth).
 ```
 
 ```
 ## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+```
+## Warning: Removed 1 rows containing non-finite values (stat_smooth).
+```
+
+```
+## Warning: Removed 1 rows containing missing values (geom_point).
 ```
 
 ![](PI_only_files/figure-html/spiCalib1-1.png)<!-- -->
@@ -706,6 +693,10 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 
+```
+## Warning: Removed 6 rows containing missing values (geom_path).
+```
+
 ![](PI_only_files/figure-html/hdiPlot-1.png)<!-- -->
 
 ## Frequence Analysis of SPI
@@ -897,7 +888,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 341 rows containing missing values (geom_text).
+## Warning: Removed 340 rows containing missing values (geom_text).
 ```
 
 ![](PI_only_files/figure-html/plotPeriods-2.png)<!-- -->
@@ -945,7 +936,7 @@ mp +
   ##geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Months", title="", subtitle="") +
   scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
   scale_x_continuous(limits=c(1500,2020)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 

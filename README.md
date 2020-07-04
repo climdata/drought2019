@@ -268,7 +268,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 227 rows containing missing values (geom_raster).
+## Warning: Removed 234 rows containing missing values (geom_raster).
 ```
 
 ![](README_files/figure-html/ti-1.png)<!-- -->
@@ -369,19 +369,19 @@ p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=4)
 ```
 
 ```
-## Warning: Removed 4 rows containing non-finite values (stat_smooth).
-```
-
-```
-## Warning: Removed 4 rows containing missing values (geom_point).
-```
-
-```
 ## Warning: Removed 2 rows containing non-finite values (stat_smooth).
 ```
 
 ```
 ## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+```
+## Warning: Removed 1 rows containing non-finite values (stat_smooth).
+```
+
+```
+## Warning: Removed 1 rows containing missing values (geom_point).
 ```
 
 ![](README_files/figure-html/spiCalib1-1.png)<!-- -->
@@ -757,6 +757,10 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 
+```
+## Warning: Removed 6 rows containing missing values (geom_path).
+```
+
 ![](README_files/figure-html/hdiPlot-1.png)<!-- -->
 
 ## Frequence Analysis of SPI
@@ -948,7 +952,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 341 rows containing missing values (geom_text).
+## Warning: Removed 340 rows containing missing values (geom_text).
 ```
 
 ![](README_files/figure-html/plotPeriods-2.png)<!-- -->

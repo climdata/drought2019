@@ -14,7 +14,7 @@ output:
 
 [![DOI](https://www.zenodo.org/badge/206506760.svg)](https://www.zenodo.org/badge/latestdoi/206506760)
 
-[DOI:10.5281/zenodo.3405167](https://doi.org/10.5281/zenodo.3405167)
+[DOI:10.5281/zenodo.3401535](https://doi.org/10.5281/zenodo.3401535)
 
 [DOI:10.5194/cp-2019-104](https://doi.org/10.5194/cp-2019-104)
 
@@ -57,20 +57,12 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
-```
-## Warning: package 'ggplot2' was built under R version 3.5.3
-```
-
 ```r
 require("extrafont")
 ```
 
 ```
 ## Loading required package: extrafont
-```
-
-```
-## Warning: package 'extrafont' was built under R version 3.5.2
 ```
 
 ```
@@ -83,6 +75,14 @@ require("ggmap")
 
 ```
 ## Loading required package: ggmap
+```
+
+```
+## Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
+```
+
+```
+## Please cite ggmap if you use it! See citation("ggmap") for details.
 ```
 
 ```r
@@ -186,13 +186,7 @@ mp + geom_raster(aes(fill=pi))+
 ```r
 require("ggplot2")
 library("RColorBrewer")
-```
 
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
 
 t1 <- tempCompl
@@ -210,7 +204,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 227 rows containing missing values (geom_raster).
+## Warning: Removed 234 rows containing missing values (geom_raster).
 ```
 
 ![](PI_and_TI_files/figure-html/ti-1.png)<!-- -->
@@ -238,13 +232,6 @@ library("ggplot2")
 library(gridExtra)
 library(grid)
 library(qdapTools)
-```
-
-```
-## Warning: package 'qdapTools' was built under R version 3.5.3
-```
-
-```r
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
@@ -266,27 +253,27 @@ summary(mx)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.46964 -0.34066  0.03096  0.36613  2.17475 
+## -2.42576 -0.33143  0.02855  0.36901  2.16292 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.018190   0.015280  -1.190 0.234095    
-## pi           0.571533   0.011636  49.117  < 2e-16 ***
-## ti          -0.054574   0.014229  -3.835 0.000131 ***
-## t1           0.080788   0.021766   3.712 0.000214 ***
-## t2          -0.050243   0.022017  -2.282 0.022644 *  
-## pi:ti        0.023148   0.011071   2.091 0.036719 *  
-## pi:t1       -0.009373   0.016392  -0.572 0.567549    
-## pi:t2        0.019394   0.016317   1.189 0.234796    
-## ti:t1        0.099314   0.019630   5.059 4.78e-07 ***
-## ti:t2        0.219752   0.020119  10.922  < 2e-16 ***
-## t1:t2        0.185162   0.043245   4.282 1.98e-05 ***
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -0.01603    0.01501  -1.068 0.285811    
+## pi           0.56643    0.01143  49.549  < 2e-16 ***
+## ti          -0.05285    0.01398  -3.780 0.000163 ***
+## t1           0.08191    0.02138   3.830 0.000134 ***
+## t2          -0.05433    0.02163  -2.512 0.012134 *  
+## pi:ti        0.02306    0.01088   2.120 0.034159 *  
+## pi:t1       -0.01080    0.01610  -0.670 0.502725    
+## pi:t2        0.02861    0.01603   1.785 0.074507 .  
+## ti:t1        0.09967    0.01928   5.168 2.71e-07 ***
+## ti:t2        0.21443    0.01977  10.849  < 2e-16 ***
+## t1:t2        0.17568    0.04249   4.135 3.77e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 0.562 on 1369 degrees of freedom
-## Multiple R-squared:  0.6854,	Adjusted R-squared:  0.6831 
-## F-statistic: 298.2 on 10 and 1369 DF,  p-value: < 2.2e-16
+## Residual standard error: 0.5522 on 1369 degrees of freedom
+## Multiple R-squared:  0.689,	Adjusted R-squared:  0.6867 
+## F-statistic: 303.3 on 10 and 1369 DF,  p-value: < 2.2e-16
 ```
 
 ```r
@@ -374,19 +361,19 @@ p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=4)
 ```
 
 ```
-## Warning: Removed 4 rows containing non-finite values (stat_smooth).
-```
-
-```
-## Warning: Removed 4 rows containing missing values (geom_point).
-```
-
-```
 ## Warning: Removed 2 rows containing non-finite values (stat_smooth).
 ```
 
 ```
 ## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+```
+## Warning: Removed 1 rows containing non-finite values (stat_smooth).
+```
+
+```
+## Warning: Removed 1 rows containing missing values (geom_point).
 ```
 
 ![](PI_and_TI_files/figure-html/spiCalib1-1.png)<!-- -->
@@ -760,6 +747,10 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
 ```
 
+```
+## Warning: Removed 6 rows containing missing values (geom_path).
+```
+
 ![](PI_and_TI_files/figure-html/hdiPlot-1.png)<!-- -->
 
 ## Frequence Analysis of SPI
@@ -950,7 +941,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 330 rows containing missing values (geom_text).
+## Warning: Removed 326 rows containing missing values (geom_text).
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-2.png)<!-- -->

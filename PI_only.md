@@ -57,12 +57,20 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
+```
+## Warning: package 'ggplot2' was built under R version 3.5.3
+```
+
 ```r
 require("extrafont")
 ```
 
 ```
 ## Loading required package: extrafont
+```
+
+```
+## Warning: package 'extrafont' was built under R version 3.5.2
 ```
 
 ```
@@ -75,6 +83,10 @@ require("ggmap")
 
 ```
 ## Loading required package: ggmap
+```
+
+```
+## Warning: package 'ggmap' was built under R version 3.5.3
 ```
 
 ```
@@ -120,8 +132,8 @@ mp <- mp +
 ```
 
 ```
-## Scale for 'size' is already present. Adding another scale for 'size',
-## which will replace the existing scale.
+## Scale for 'size' is already present. Adding another scale for 'size', which
+## will replace the existing scale.
 ```
 
 ```r
@@ -177,6 +189,10 @@ mp + geom_raster(aes(fill=pi))+
   guides(fill=guide_legend(title="PI", reverse = TRUE))  
 ```
 
+```
+## Warning: Removed 1 rows containing missing values (geom_raster).
+```
+
 ![](PI_only_files/figure-html/pi-1.png)<!-- -->
 
 ## Visialize Monthly Temperature Data (TI)
@@ -186,7 +202,13 @@ mp + geom_raster(aes(fill=pi))+
 ```r
 require("ggplot2")
 library("RColorBrewer")
+```
 
+```
+## Warning: package 'RColorBrewer' was built under R version 3.5.2
+```
+
+```r
 tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
 
 t1 <- tempCompl
@@ -204,7 +226,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 234 rows containing missing values (geom_raster).
+## Warning: Removed 241 rows containing missing values (geom_raster).
 ```
 
 ![](PI_only_files/figure-html/ti-1.png)<!-- -->
@@ -214,6 +236,10 @@ mp + geom_raster(aes(fill=ti))+
 
 ```r
 library(zoo)
+```
+
+```
+## Warning: package 'zoo' was built under R version 3.5.3
 ```
 
 ```
@@ -232,6 +258,13 @@ library("ggplot2")
 library(gridExtra)
 library(grid)
 library(qdapTools)
+```
+
+```
+## Warning: package 'qdapTools' was built under R version 3.5.3
+```
+
+```r
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
@@ -694,7 +727,15 @@ mp + geom_raster(aes(year,month, fill=hhi))+
 ```
 
 ```
-## Warning: Removed 6 rows containing missing values (geom_path).
+## Warning: Removed 1 rows containing missing values (geom_raster).
+
+## Warning: Removed 1 rows containing missing values (geom_raster).
+
+## Warning: Removed 1 rows containing missing values (geom_raster).
+```
+
+```
+## Warning: Removed 13 rows containing missing values (geom_path).
 ```
 
 ![](PI_only_files/figure-html/hdiPlot-1.png)<!-- -->
@@ -888,7 +929,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 340 rows containing missing values (geom_text).
+## Warning: Removed 341 rows containing missing values (geom_text).
 ```
 
 ![](PI_only_files/figure-html/plotPeriods-2.png)<!-- -->

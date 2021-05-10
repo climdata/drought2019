@@ -254,7 +254,7 @@ mp + geom_raster(aes(fill=pi))+
 ```
 
 ```
-## Warning: Removed 1 rows containing missing values (geom_raster).
+## Warning: Removed 4 rows containing missing values (geom_raster).
 ```
 
 ![](README_files/figure-html/pi-1.png)<!-- -->
@@ -290,7 +290,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 241 rows containing missing values (geom_raster).
+## Warning: Removed 244 rows containing missing values (geom_raster).
 ```
 
 ![](README_files/figure-html/ti-1.png)<!-- -->
@@ -333,19 +333,19 @@ spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
 hi <- precCompl
-hi$hdi1 <- hi$pi
+hi$hpi1 <- hi$pi
 hi <- hi[order(hi$ts),]
-prev <- hi$hdi1
+prev <- hi$hpi1
 for (m in c(2,3,4,5,6,7,8,9,10,11,12)) {
-  column <- paste("hdi", m, sep="")
-  hdi <- rollapply(hi$pi, width=m, by=1, FUN=sum)
-  hi$hdi <- prev
-  hi$hdi[m:length(hi$hdi)] <- hdi
-  prev <- hi$hdi
-  names(hi)[names(hi) == 'hdi'] <- column
+  column <- paste("hpi", m, sep="")
+  hpi <- rollapply(hi$pi, width=m, by=1, FUN=sum)
+  hi$hpi <- prev
+  hi$hpi[m:length(hi$hpi)] <- hpi
+  prev <- hi$hpi
+  names(hi)[names(hi) == 'hpi'] <- column
 }
 hiCal <- subset(hi, hi$year>1880 & hi$year<1996)
-hdispi <- merge(hiCal,spiCal, by=c("year","month"))
+hpispi <- merge(hiCal,spiCal, by=c("year","month"))
 
 plots <-  list()
 slopes <- list()
@@ -356,9 +356,9 @@ for (m in c(1:12)) {
   if(m==1) {
     yBreaks <-c(-3,-2,-1,0,1,2,3)
   }
-  hdiCol <- paste("hdi", m, sep="")
+  hpiCol <- paste("hpi", m, sep="")
   spiCol <- paste("spi", m, sep="")
-  df <- data.frame(y = hdispi[,hdiCol], x = hdispi[,spiCol])
+  df <- data.frame(y = hpispi[,hpiCol], x = hpispi[,spiCol])
   df <- subset(df, !is.na(df$x))
   mx <- lm(y ~ x, df);  
   slope <- unname(coef(mx)[2])
@@ -379,7 +379,7 @@ for (m in c(1:12)) {
     scale_y_continuous(breaks=yBreaks) +
     geom_hline(aes(yintercept=0)) +
     geom_vline(aes(xintercept=0)) +
-    labs(x=toupper(spiCol), y=toupper(hdiCol), title="", subtitle="") +
+    labs(x=toupper(spiCol), y=toupper(hpiCol), title="", subtitle="") +
     geom_smooth(method = "lm", se=TRUE, color="cyan", formula = y ~ x) +
     geom_point(color="#0000AA", alpha=0.3, size=5) +
     geom_text(x = 1.4, y = -3*slope, label = eq, parse = TRUE, size=15)
@@ -489,11 +489,11 @@ p
 ```r
 hspi <- hi[,c('year','month','time', 'ts')]
 for (m in c(1:12)) {
-  hdiCol <- paste("hdi", m, sep="")
+  hpiCol <- paste("hpi", m, sep="")
   spiCol <- paste("spi", m, sep="")
-  spi <- hi[,hdiCol] * m^(-1/sqrt(3.0))
+  spi <- hi[,hpiCol] * m^(-1/sqrt(3.0))
   # more exact reconstruction
-  spi <- (hi[,hdiCol] - bOffset * m)  / (aSlope * m^bSlope)
+  spi <- (hi[,hpiCol] - bOffset * m)  / (aSlope * m^bSlope)
   hspi$spi <- round(spi, digits=6)
   names(hspi)[names(hspi) == 'spi'] <- spiCol
 }
@@ -791,15 +791,15 @@ mp + geom_raster(aes(year,month, fill=hhi))+
 ```
 
 ```
-## Warning: Removed 1 rows containing missing values (geom_raster).
+## Warning: Removed 4 rows containing missing values (geom_raster).
 
-## Warning: Removed 1 rows containing missing values (geom_raster).
+## Warning: Removed 4 rows containing missing values (geom_raster).
 
-## Warning: Removed 1 rows containing missing values (geom_raster).
+## Warning: Removed 4 rows containing missing values (geom_raster).
 ```
 
 ```
-## Warning: Removed 13 rows containing missing values (geom_path).
+## Warning: Removed 16 rows containing missing values (geom_path).
 ```
 
 ![](README_files/figure-html/hdiPlot-1.png)<!-- -->
@@ -1028,6 +1028,10 @@ mp +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 ```
 
+```
+## Warning: Removed 1 rows containing missing values (geom_tile).
+```
+
 ![](README_files/figure-html/plotPeriods-3.png)<!-- -->
 
 ```r
@@ -1047,6 +1051,10 @@ mp +
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
+```
+
+```
+## Warning: Removed 1 rows containing missing values (geom_tile).
 ```
 
 ![](README_files/figure-html/plotPeriods-4.png)<!-- -->

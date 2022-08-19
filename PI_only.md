@@ -57,10 +57,6 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
-```
-## Warning: package 'ggplot2' was built under R version 3.5.3
-```
-
 ```r
 require("extrafont")
 ```
@@ -70,11 +66,8 @@ require("extrafont")
 ```
 
 ```
-## Warning: package 'extrafont' was built under R version 3.5.2
-```
-
-```
-## Registering fonts with R
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called 'extrafont'
 ```
 
 ```r
@@ -86,15 +79,8 @@ require("ggmap")
 ```
 
 ```
-## Warning: package 'ggmap' was built under R version 3.5.3
-```
-
-```
-## Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
-```
-
-```
-## Please cite ggmap if you use it! See citation("ggmap") for details.
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called 'ggmap'
 ```
 
 ```r
@@ -182,15 +168,11 @@ mp + geom_raster(aes(fill=pi))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30",
                        limits=c(-3,3)) +
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="PI", reverse = TRUE))  
-```
-
-```
-## Warning: Removed 1 rows containing missing values (geom_raster).
 ```
 
 ![](PI_only_files/figure-html/pi-1.png)<!-- -->
@@ -202,13 +184,7 @@ mp + geom_raster(aes(fill=pi))+
 ```r
 require("ggplot2")
 library("RColorBrewer")
-```
 
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
 
 t1 <- tempCompl
@@ -219,14 +195,14 @@ mp + geom_raster(aes(fill=ti))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=tempColors) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="TI", reverse = TRUE))  
 ```
 
 ```
-## Warning: Removed 241 rows containing missing values (geom_raster).
+## Warning: Removed 259 rows containing missing values (geom_raster).
 ```
 
 ![](PI_only_files/figure-html/ti-1.png)<!-- -->
@@ -236,10 +212,6 @@ mp + geom_raster(aes(fill=ti))+
 
 ```r
 library(zoo)
-```
-
-```
-## Warning: package 'zoo' was built under R version 3.5.3
 ```
 
 ```
@@ -258,13 +230,6 @@ library("ggplot2")
 library(gridExtra)
 library(grid)
 library(qdapTools)
-```
-
-```
-## Warning: package 'qdapTools' was built under R version 3.5.3
-```
-
-```r
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
@@ -330,11 +295,11 @@ p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=4)
 ```
 
 ```
-## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+## Warning: Removed 5 rows containing non-finite values (stat_smooth).
 ```
 
 ```
-## Warning: Removed 3 rows containing missing values (geom_point).
+## Warning: Removed 5 rows containing missing values (geom_point).
 ```
 
 ```
@@ -716,7 +681,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   #theme_classic() +
   theme_classic(base_size=80) +
   scale_y_continuous(breaks=c(-2,-1,1,6,12), lab=c("1y","5y","1","6","12"))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   #scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30") +
   scale_fill_gradientn(colors=hhiColors) +  
   theme( legend.key.width = unit(2,"cm")) +
@@ -724,18 +689,6 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   geom_hline(aes(yintercept = 6+0)) +
   geom_line(aes(y=6+2.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
-```
-
-```
-## Warning: Removed 1 rows containing missing values (geom_raster).
-
-## Warning: Removed 1 rows containing missing values (geom_raster).
-
-## Warning: Removed 1 rows containing missing values (geom_raster).
-```
-
-```
-## Warning: Removed 13 rows containing missing values (geom_path).
 ```
 
 ![](PI_only_files/figure-html/hdiPlot-1.png)<!-- -->
@@ -929,7 +882,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 341 rows containing missing values (geom_text).
+## Warning: Removed 342 rows containing missing values (geom_text).
 ```
 
 ![](PI_only_files/figure-html/plotPeriods-2.png)<!-- -->
@@ -958,7 +911,7 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -979,7 +932,7 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Months", title="", subtitle="") +
   scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))

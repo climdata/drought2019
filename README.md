@@ -57,10 +57,6 @@ require("ggplot2")
 ## Loading required package: ggplot2
 ```
 
-```
-## Warning: package 'ggplot2' was built under R version 3.5.3
-```
-
 ```r
 require("extrafont")
 ```
@@ -70,11 +66,8 @@ require("extrafont")
 ```
 
 ```
-## Warning: package 'extrafont' was built under R version 3.5.2
-```
-
-```
-## Registering fonts with R
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called 'extrafont'
 ```
 
 ```r
@@ -86,15 +79,8 @@ require("ggmap")
 ```
 
 ```
-## Warning: package 'ggmap' was built under R version 3.5.3
-```
-
-```
-## Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
-```
-
-```
-## Please cite ggmap if you use it! See citation("ggmap") for details.
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called 'ggmap'
 ```
 
 ```r
@@ -254,7 +240,7 @@ mp + geom_raster(aes(fill=pi))+
 ```
 
 ```
-## Warning: Removed 4 rows containing missing values (geom_raster).
+## Warning: Removed 19 rows containing missing values (geom_raster).
 ```
 
 ![](README_files/figure-html/pi-1.png)<!-- -->
@@ -266,13 +252,7 @@ mp + geom_raster(aes(fill=pi))+
 ```r
 require("ggplot2")
 library("RColorBrewer")
-```
 
-```
-## Warning: package 'RColorBrewer' was built under R version 3.5.2
-```
-
-```r
 tempColors = rev(brewer.pal(n = 9, name = "RdBu"))
 
 t1 <- tempCompl
@@ -290,7 +270,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 244 rows containing missing values (geom_raster).
+## Warning: Removed 259 rows containing missing values (geom_raster).
 ```
 
 ![](README_files/figure-html/ti-1.png)<!-- -->
@@ -300,10 +280,6 @@ mp + geom_raster(aes(fill=ti))+
 
 ```r
 library(zoo)
-```
-
-```
-## Warning: package 'zoo' was built under R version 3.5.3
 ```
 
 ```
@@ -322,13 +298,6 @@ library("ggplot2")
 library(gridExtra)
 library(grid)
 library(qdapTools)
-```
-
-```
-## Warning: package 'qdapTools' was built under R version 3.5.3
-```
-
-```r
 spiCal <- subset(spifull, spifull$year>1880 & spifull$year<1996)
 spiCal <- spiCal[order(spiCal$ts),]
 
@@ -394,11 +363,11 @@ p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=4)
 ```
 
 ```
-## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+## Warning: Removed 5 rows containing non-finite values (stat_smooth).
 ```
 
 ```
-## Warning: Removed 3 rows containing missing values (geom_point).
+## Warning: Removed 5 rows containing missing values (geom_point).
 ```
 
 ```
@@ -791,15 +760,15 @@ mp + geom_raster(aes(year,month, fill=hhi))+
 ```
 
 ```
-## Warning: Removed 4 rows containing missing values (geom_raster).
+## Warning: Removed 19 rows containing missing values (geom_raster).
 
-## Warning: Removed 4 rows containing missing values (geom_raster).
+## Warning: Removed 19 rows containing missing values (geom_raster).
 
-## Warning: Removed 4 rows containing missing values (geom_raster).
+## Warning: Removed 19 rows containing missing values (geom_raster).
 ```
 
 ```
-## Warning: Removed 16 rows containing missing values (geom_path).
+## Warning: Removed 31 rows containing missing values (geom_path).
 ```
 
 ![](README_files/figure-html/hdiPlot-1.png)<!-- -->
@@ -993,7 +962,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 341 rows containing missing values (geom_text).
+## Warning: Removed 342 rows containing missing values (geom_text).
 ```
 
 ![](README_files/figure-html/plotPeriods-2.png)<!-- -->
@@ -1029,7 +998,7 @@ mp +
 ```
 
 ```
-## Warning: Removed 1 rows containing missing values (geom_tile).
+## Warning: Removed 7 rows containing missing values (geom_tile).
 ```
 
 ![](README_files/figure-html/plotPeriods-3.png)<!-- -->
@@ -1054,7 +1023,7 @@ mp +
 ```
 
 ```
-## Warning: Removed 1 rows containing missing values (geom_tile).
+## Warning: Removed 7 rows containing missing values (geom_tile).
 ```
 
 ![](README_files/figure-html/plotPeriods-4.png)<!-- -->

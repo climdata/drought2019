@@ -37,8 +37,8 @@ jobs:
 ##      - name: Install lmomco
 ##        run: (R -e "install.packages('lmomco')")
 
-##      - name: Install SCI
-##        run: (R -e "install.packages('SCI')")
+      - name: Install qdapTools
+        run: (R -e "install.packages('qdapTools')")
       - name: Run knitr
         run: (R -e "rmarkdown::render('/cre/R/README.Rmd')")
       - name: Submit changes       

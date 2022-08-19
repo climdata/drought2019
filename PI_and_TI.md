@@ -66,7 +66,8 @@ require("extrafont")
 ```
 
 ```
-## Registering fonts with R
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called 'extrafont'
 ```
 
 ```r
@@ -78,11 +79,8 @@ require("ggmap")
 ```
 
 ```
-## Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
-```
-
-```
-## Please cite ggmap if you use it! See citation("ggmap") for details.
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called 'ggmap'
 ```
 
 ```r
@@ -120,8 +118,8 @@ mp <- mp +
 ```
 
 ```
-## Scale for 'size' is already present. Adding another scale for 'size',
-## which will replace the existing scale.
+## Scale for 'size' is already present. Adding another scale for 'size', which
+## will replace the existing scale.
 ```
 
 ```r
@@ -170,7 +168,7 @@ mp + geom_raster(aes(fill=pi))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30",
                        limits=c(-3,3)) +
   theme( legend.key.width = unit(2,"cm")) +
@@ -197,14 +195,14 @@ mp + geom_raster(aes(fill=ti))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=tempColors) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="TI", reverse = TRUE))  
 ```
 
 ```
-## Warning: Removed 234 rows containing missing values (geom_raster).
+## Warning: Removed 259 rows containing missing values (geom_raster).
 ```
 
 ![](PI_and_TI_files/figure-html/ti-1.png)<!-- -->
@@ -253,27 +251,27 @@ summary(mx)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.42576 -0.33143  0.02855  0.36901  2.16292 
+## -2.45273 -0.33713  0.02675  0.38002  2.53858 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.01603    0.01501  -1.068 0.285811    
-## pi           0.56643    0.01143  49.549  < 2e-16 ***
-## ti          -0.05285    0.01398  -3.780 0.000163 ***
-## t1           0.08191    0.02138   3.830 0.000134 ***
-## t2          -0.05433    0.02163  -2.512 0.012134 *  
-## pi:ti        0.02306    0.01088   2.120 0.034159 *  
-## pi:t1       -0.01080    0.01610  -0.670 0.502725    
-## pi:t2        0.02861    0.01603   1.785 0.074507 .  
-## ti:t1        0.09967    0.01928   5.168 2.71e-07 ***
-## ti:t2        0.21443    0.01977  10.849  < 2e-16 ***
-## t1:t2        0.17568    0.04249   4.135 3.77e-05 ***
+## (Intercept) -0.02105    0.01541  -1.366 0.172262    
+## pi           0.57886    0.01174  49.318  < 2e-16 ***
+## ti          -0.05450    0.01435  -3.797 0.000153 ***
+## t1           0.08825    0.02196   4.019 6.15e-05 ***
+## t2          -0.05632    0.02221  -2.536 0.011324 *  
+## pi:ti        0.02539    0.01117   2.273 0.023152 *  
+## pi:t1       -0.03202    0.01653  -1.937 0.052967 .  
+## pi:t2        0.01814    0.01646   1.102 0.270462    
+## ti:t1        0.10849    0.01980   5.479 5.07e-08 ***
+## ti:t2        0.21920    0.02029  10.801  < 2e-16 ***
+## t1:t2        0.15273    0.04362   3.501 0.000478 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 0.5522 on 1369 degrees of freedom
-## Multiple R-squared:  0.689,	Adjusted R-squared:  0.6867 
-## F-statistic: 303.3 on 10 and 1369 DF,  p-value: < 2.2e-16
+## Residual standard error: 0.5669 on 1369 degrees of freedom
+## Multiple R-squared:  0.6873,	Adjusted R-squared:  0.685 
+## F-statistic: 300.9 on 10 and 1369 DF,  p-value: < 2.2e-16
 ```
 
 ```r
@@ -353,11 +351,11 @@ p <- grid.arrange(grobs = lapply(plots, "+", margin), nrow=4)
 ```
 
 ```
-## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+## Warning: Removed 5 rows containing non-finite values (stat_smooth).
 ```
 
 ```
-## Warning: Removed 3 rows containing missing values (geom_point).
+## Warning: Removed 5 rows containing missing values (geom_point).
 ```
 
 ```
@@ -737,7 +735,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   #theme_classic() +
   theme_classic(base_size=80) +
   scale_y_continuous(breaks=c(-2,-1,1,6,12), lab=c("1y","5y","1","6","12"))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   #scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30") +
   scale_fill_gradientn(colors=hhiColors) +  
   theme( legend.key.width = unit(2,"cm")) +
@@ -745,10 +743,6 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   geom_hline(aes(yintercept = 6+0)) +
   geom_line(aes(y=6+2.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
-```
-
-```
-## Warning: Removed 6 rows containing missing values (geom_path).
 ```
 
 ![](PI_and_TI_files/figure-html/hdiPlot-1.png)<!-- -->
@@ -941,7 +935,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 326 rows containing missing values (geom_text).
+## Warning: Removed 332 rows containing missing values (geom_text).
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-2.png)<!-- -->
@@ -973,7 +967,7 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -994,7 +988,7 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Months", title="", subtitle="") +
   scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))

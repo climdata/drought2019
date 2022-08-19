@@ -181,7 +181,7 @@ mp1 <- ggplot() +
   #coord_cartesian(ylim=c(-4,4)) +
   #scale_y_continuous(limits=c(0,8000)) +
   scale_y_log10() +
-  scale_x_continuous(breaks=c(1500,1600,1700,1800,1900,2000), limits=c(1500,2020)) +
+  scale_x_continuous(breaks=c(1500,1600,1700,1800,1900,2000), limits=c(1500,2030)) +
   labs(x="Year", y="Count", title="", subtitle="") +
   #geom_hline(aes(yintercept=0)) +
   geom_line(aes(y=tmp_all_de$count, x=tmp_all_de$year, color="All"), size=2.5) +
@@ -232,15 +232,11 @@ mp + geom_raster(aes(fill=pi))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30",
                        limits=c(-3,3)) +
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="PI", reverse = TRUE))  
-```
-
-```
-## Warning: Removed 19 rows containing missing values (geom_raster).
 ```
 
 ![](README_files/figure-html/pi-1.png)<!-- -->
@@ -263,7 +259,7 @@ mp + geom_raster(aes(fill=ti))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=tempColors) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="TI", reverse = TRUE))  
@@ -749,7 +745,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   #theme_classic() +
   theme_classic(base_size=80) +
   scale_y_continuous(breaks=c(-2,-1,1,6,12), lab=c("1y","5y","1","6","12"))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   #scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30") +
   scale_fill_gradientn(colors=hhiColors) +  
   theme( legend.key.width = unit(2,"cm")) +
@@ -757,18 +753,6 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   geom_hline(aes(yintercept = 6+0)) +
   geom_line(aes(y=6+2.5*pt1$prec5, x=pt1$ts, color="Filtered"), size=2.5) +
   scale_color_manual("Filtered", values=c("#000000"), labels=c("5y"))    
-```
-
-```
-## Warning: Removed 19 rows containing missing values (geom_raster).
-
-## Warning: Removed 19 rows containing missing values (geom_raster).
-
-## Warning: Removed 19 rows containing missing values (geom_raster).
-```
-
-```
-## Warning: Removed 31 rows containing missing values (geom_path).
 ```
 
 ![](README_files/figure-html/hdiPlot-1.png)<!-- -->
@@ -991,14 +975,10 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
-```
-
-```
-## Warning: Removed 7 rows containing missing values (geom_tile).
 ```
 
 ![](README_files/figure-html/plotPeriods-3.png)<!-- -->
@@ -1016,14 +996,10 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Months", title="", subtitle="") +
   scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,2030)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
-```
-
-```
-## Warning: Removed 7 rows containing missing values (geom_tile).
 ```
 
 ![](README_files/figure-html/plotPeriods-4.png)<!-- -->

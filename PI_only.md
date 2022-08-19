@@ -40,6 +40,9 @@ do_fft <- function(pic, filterYears) {
   pic1 <- pic1[1:len]
   return(pic1)
 }
+
+currentYear <- strtoi(substr(Sys.Date(),1,4))
+endYear <- ceiling(currentYear/10.0)*10.0
 ```
 
  
@@ -168,7 +171,7 @@ mp + geom_raster(aes(fill=pi))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2030)) +  
+  scale_x_continuous(limits=c(1500,endYear)) +  
   scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30",
                        limits=c(-3,3)) +
   theme( legend.key.width = unit(2,"cm")) +
@@ -195,7 +198,7 @@ mp + geom_raster(aes(fill=ti))+
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(1,6,12))+
-  scale_x_continuous(limits=c(1500,2030)) +  
+  scale_x_continuous(limits=c(1500,endYear)) +  
   scale_fill_gradientn(colors=tempColors) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="TI", reverse = TRUE))  
@@ -681,7 +684,7 @@ mp + geom_raster(aes(year,month, fill=hhi))+
   #theme_classic() +
   theme_classic(base_size=80) +
   scale_y_continuous(breaks=c(-2,-1,1,6,12), lab=c("1y","5y","1","6","12"))+
-  scale_x_continuous(limits=c(1500,2030)) +  
+  scale_x_continuous(limits=c(1500,endYear)) +  
   #scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30") +
   scale_fill_gradientn(colors=hhiColors) +  
   theme( legend.key.width = unit(2,"cm")) +
@@ -911,7 +914,7 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
-  scale_x_continuous(limits=c(1500,2030)) +  
+  scale_x_continuous(limits=c(1500,endYear)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -932,7 +935,7 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Months", title="", subtitle="") +
   scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
-  scale_x_continuous(limits=c(1500,2030)) +  
+  scale_x_continuous(limits=c(1500,endYear)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))

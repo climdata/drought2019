@@ -1,0 +1,45 @@
+# This is a basic workflow to help you get started with Actions
+
+name: docker_action:0.0
+
+on:
+  push:
+    branches:
+      - 'master'
+  workflow_dispatch:
+  schedule:
+    # * is a special character in YAML so you have to quote this string : weekly,Sunday,11:00 #m h d/m m d/w 
+    - cron:  '00 11 * * 0'
+
+jobs:
+  docker-run-action:
+    runs-on: ubuntu-latest
+    container:
+      image: tamboraorg/crecoding:2020.0
+      env:
+        NODE_ENV: development
+      ports:
+        - 80
+      volumes:
+        - ${{ github.workspace }}:/cre/R
+    steps:
+      - uses: actions/checkout@v3
+#        with:
+#          ref: master
+
+##      - name: Install liblapack-dev gfortran
+##        run: (apt-get -y --no-install-recommends install liblapack-dev gfortran) 
+
+##      - name: Install RcppArmadillo
+##        run: (R -e "install.packages('RcppArmadillo')")
+##      - name: Install Lmoments
+##        run: (R -e "install.packages('Lmoments')")
+##      - name: Install lmomco
+##        run: (R -e "install.packages('lmomco')")
+
+##      - name: Install SCI
+##        run: (R -e "install.packages('SCI')")
+      - name: Run knitr
+        run: (R -e "rmarkdown::render('/cre/R/README.Rmd')")
+      - name: Submit changes       
+        uses: EndBug/add-and-commit@v9

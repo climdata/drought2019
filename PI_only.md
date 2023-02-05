@@ -205,7 +205,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 264 rows containing missing values (geom_raster).
+## Warning: Removed 265 rows containing missing values (geom_raster).
 ```
 
 ![](PI_only_files/figure-html/ti-1.png)<!-- -->

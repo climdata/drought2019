@@ -269,7 +269,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 269 rows containing missing values (geom_raster).
+## Warning: Removed 270 rows containing missing values (geom_raster).
 ```
 
 ![](README_files/figure-html/ti-1.png)<!-- -->
@@ -949,7 +949,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 334 rows containing missing values (geom_text).
+## Warning: Removed 335 rows containing missing values (geom_text).
 ```
 
 ![](README_files/figure-html/plotPeriods-2.png)<!-- -->

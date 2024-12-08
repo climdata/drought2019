@@ -205,7 +205,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 286 rows containing missing values (geom_raster).
+## Warning: Removed 287 rows containing missing values (geom_raster).
 ```
 
 ![](PI_and_TI_files/figure-html/ti-1.png)<!-- -->
@@ -254,27 +254,27 @@ summary(mx)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.46376 -0.33011  0.02984  0.36434  2.15430 
+## -2.46399 -0.33068  0.02942  0.36464  2.15457 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.02214    0.01499  -1.477 0.139957    
-## pi           0.56630    0.01142  49.598  < 2e-16 ***
-## ti          -0.05204    0.01396  -3.727 0.000202 ***
-## t1           0.08024    0.02136   3.757 0.000179 ***
-## t2          -0.06427    0.02160  -2.975 0.002981 ** 
-## pi:ti        0.02259    0.01086   2.079 0.037770 *  
-## pi:t1       -0.01010    0.01608  -0.628 0.530277    
-## pi:t2        0.03080    0.01601   1.924 0.054568 .  
-## ti:t1        0.09997    0.01926   5.190 2.42e-07 ***
-## ti:t2        0.21458    0.01974  10.869  < 2e-16 ***
-## t1:t2        0.17582    0.04243   4.143 3.63e-05 ***
+## (Intercept) -0.02192    0.01500  -1.462 0.144026    
+## pi           0.56638    0.01142  49.590  < 2e-16 ***
+## ti          -0.05200    0.01397  -3.723 0.000205 ***
+## t1           0.08004    0.02136   3.746 0.000187 ***
+## t2          -0.06391    0.02161  -2.957 0.003158 ** 
+## pi:ti        0.02262    0.01087   2.082 0.037525 *  
+## pi:t1       -0.01019    0.01609  -0.633 0.526681    
+## pi:t2        0.03096    0.01602   1.933 0.053434 .  
+## ti:t1        0.09989    0.01927   5.184 2.49e-07 ***
+## ti:t2        0.21466    0.01975  10.870  < 2e-16 ***
+## t1:t2        0.17509    0.04245   4.125 3.93e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 0.5515 on 1369 degrees of freedom
-## Multiple R-squared:  0.6896,	Adjusted R-squared:  0.6873 
-## F-statistic: 304.1 on 10 and 1369 DF,  p-value: < 2.2e-16
+## Residual standard error: 0.5517 on 1369 degrees of freedom
+## Multiple R-squared:  0.6895,	Adjusted R-squared:  0.6872 
+## F-statistic:   304 on 10 and 1369 DF,  p-value: < 2.2e-16
 ```
 
 ```r

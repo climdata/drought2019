@@ -205,7 +205,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 303 rows containing missing values (geom_raster).
+## Warning: Removed 304 rows containing missing values (geom_raster).
 ```
 
 ![](PI_and_TI_files/figure-html/ti-1.png)<!-- -->
@@ -254,21 +254,21 @@ summary(mx)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.47772 -0.33148  0.02844  0.36406  2.15537 
+## -2.46346 -0.33359  0.02795  0.36264  2.15648 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.018103   0.014984  -1.208 0.227203    
-## pi           0.565839   0.011411  49.589  < 2e-16 ***
-## ti          -0.051837   0.013953  -3.715 0.000211 ***
-## t1           0.084954   0.021345   3.980 7.25e-05 ***
-## t2          -0.062530   0.021591  -2.896 0.003838 ** 
-## pi:ti        0.022520   0.010856   2.074 0.038232 *  
-## pi:t1       -0.009245   0.016074  -0.575 0.565274    
-## pi:t2        0.031911   0.016001   1.994 0.046311 *  
-## ti:t1        0.100467   0.019249   5.219 2.07e-07 ***
-## ti:t2        0.214591   0.019730  10.877  < 2e-16 ***
-## t1:t2        0.168836   0.042407   3.981 7.21e-05 ***
+## (Intercept) -0.017414   0.014983  -1.162 0.245329    
+## pi           0.565770   0.011410  49.586  < 2e-16 ***
+## ti          -0.051836   0.013952  -3.715 0.000211 ***
+## t1           0.086164   0.021343   4.037 5.71e-05 ***
+## t2          -0.063217   0.021589  -2.928 0.003466 ** 
+## pi:ti        0.022486   0.010855   2.071 0.038509 *  
+## pi:t1       -0.009342   0.016073  -0.581 0.561173    
+## pi:t2        0.031957   0.016000   1.997 0.045984 *  
+## ti:t1        0.100509   0.019248   5.222 2.05e-07 ***
+## ti:t2        0.214554   0.019728  10.875  < 2e-16 ***
+## t1:t2        0.166407   0.042404   3.924 9.13e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -938,7 +938,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 331 rows containing missing values (geom_text).
+## Warning: Removed 332 rows containing missing values (geom_text).
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-2.png)<!-- -->

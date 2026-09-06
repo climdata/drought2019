@@ -205,7 +205,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 307 rows containing missing values (geom_raster).
+## Warning: Removed 308 rows containing missing values (geom_raster).
 ```
 
 ![](PI_and_TI_files/figure-html/ti-1.png)<!-- -->
@@ -254,27 +254,27 @@ summary(mx)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.39695 -0.32307  0.03072  0.37374  2.21955 
+## -2.39555 -0.32272  0.03113  0.37567  2.22487 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.023349   0.015609  -1.496 0.134920    
-## pi           0.580406   0.011887  48.829  < 2e-16 ***
-## ti          -0.061466   0.014535  -4.229 2.51e-05 ***
-## t1           0.090041   0.022235   4.050 5.42e-05 ***
-## t2          -0.061902   0.022491  -2.752 0.005997 ** 
-## pi:ti        0.027613   0.011309   2.442 0.014744 *  
-## pi:t1       -0.027017   0.016745  -1.613 0.106872    
-## pi:t2        0.001703   0.016668   0.102 0.918644    
-## ti:t1        0.113766   0.020052   5.673 1.71e-08 ***
-## ti:t2        0.241680   0.020553  11.759  < 2e-16 ***
-## t1:t2        0.148133   0.044176   3.353 0.000821 ***
+## (Intercept) -0.022569   0.015614  -1.446 0.148545    
+## pi           0.580327   0.011890  48.808  < 2e-16 ***
+## ti          -0.061544   0.014539  -4.233 2.46e-05 ***
+## t1           0.088684   0.022241   3.987 7.03e-05 ***
+## t2          -0.062647   0.022498  -2.785 0.005433 ** 
+## pi:ti        0.027645   0.011312   2.444 0.014656 *  
+## pi:t1       -0.026817   0.016749  -1.601 0.109588    
+## pi:t2        0.001751   0.016673   0.105 0.916374    
+## ti:t1        0.113953   0.020058   5.681 1.63e-08 ***
+## ti:t2        0.241735   0.020558  11.758  < 2e-16 ***
+## t1:t2        0.150735   0.044188   3.411 0.000666 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 0.5741 on 1369 degrees of freedom
-## Multiple R-squared:  0.6868,	Adjusted R-squared:  0.6845 
-## F-statistic: 300.3 on 10 and 1369 DF,  p-value: < 2.2e-16
+## Residual standard error: 0.5743 on 1369 degrees of freedom
+## Multiple R-squared:  0.6867,	Adjusted R-squared:  0.6844 
+## F-statistic:   300 on 10 and 1369 DF,  p-value: < 2.2e-16
 ```
 
 ```r
@@ -938,7 +938,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 332 rows containing missing values (geom_text).
+## Warning: Removed 333 rows containing missing values (geom_text).
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-2.png)<!-- -->

@@ -205,7 +205,7 @@ mp + geom_raster(aes(fill=ti))+
 ```
 
 ```
-## Warning: Removed 308 rows containing missing values (geom_raster).
+## Warning: Removed 309 rows containing missing values (geom_raster).
 ```
 
 ![](PI_and_TI_files/figure-html/ti-1.png)<!-- -->
@@ -253,28 +253,28 @@ summary(mx)
 ## lm(formula = spi1 ~ (pi + ti + t1 + t2)^2, data = tps)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -2.39555 -0.32272  0.03113  0.37567  2.22487 
+##     Min      1Q  Median      3Q     Max 
+## -2.3954 -0.3216  0.0309  0.3751  2.2241 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.022569   0.015614  -1.446 0.148545    
-## pi           0.580327   0.011890  48.808  < 2e-16 ***
-## ti          -0.061544   0.014539  -4.233 2.46e-05 ***
-## t1           0.088684   0.022241   3.987 7.03e-05 ***
-## t2          -0.062647   0.022498  -2.785 0.005433 ** 
-## pi:ti        0.027645   0.011312   2.444 0.014656 *  
-## pi:t1       -0.026817   0.016749  -1.601 0.109588    
-## pi:t2        0.001751   0.016673   0.105 0.916374    
-## ti:t1        0.113953   0.020058   5.681 1.63e-08 ***
-## ti:t2        0.241735   0.020558  11.758  < 2e-16 ***
-## t1:t2        0.150735   0.044188   3.411 0.000666 ***
+## (Intercept) -0.022111   0.015613  -1.416 0.156958    
+## pi           0.580397   0.011890  48.816  < 2e-16 ***
+## ti          -0.061539   0.014539  -4.233 2.46e-05 ***
+## t1           0.087767   0.022241   3.946 8.34e-05 ***
+## t2          -0.062646   0.022497  -2.785 0.005432 ** 
+## pi:ti        0.027615   0.011312   2.441 0.014762 *  
+## pi:t1       -0.026944   0.016749  -1.609 0.107918    
+## pi:t2        0.001693   0.016672   0.102 0.919128    
+## ti:t1        0.113971   0.020057   5.682 1.62e-08 ***
+## ti:t2        0.241652   0.020558  11.755  < 2e-16 ***
+## t1:t2        0.150759   0.044187   3.412 0.000664 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 0.5743 on 1369 degrees of freedom
 ## Multiple R-squared:  0.6867,	Adjusted R-squared:  0.6844 
-## F-statistic:   300 on 10 and 1369 DF,  p-value: < 2.2e-16
+## F-statistic: 300.1 on 10 and 1369 DF,  p-value: < 2.2e-16
 ```
 
 ```r
@@ -938,7 +938,7 @@ ggplot(data=hhi_periods, aes(y=-hhi.cmax, x=year, size=duration, color=-hhi.avg,
 ```
 
 ```
-## Warning: Removed 333 rows containing missing values (geom_text).
+## Warning: Removed 331 rows containing missing values (geom_text).
 ```
 
 ![](PI_and_TI_files/figure-html/plotPeriods-2.png)<!-- -->
